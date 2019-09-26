@@ -107,7 +107,6 @@ public class Scheduler {
                 }
             }
         }
-        System.out.println("next earliest: " + procesNumber);
         return procesNumber;
     
     }

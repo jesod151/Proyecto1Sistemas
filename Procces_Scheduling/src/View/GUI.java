@@ -36,7 +36,7 @@ public class GUI extends javax.swing.JFrame {
         g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
         
         //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));
-        //this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));
+        this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));
         //this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));
         
         this.setProcesos();
@@ -74,6 +74,7 @@ public class GUI extends javax.swing.JFrame {
         panelInfoProcesos = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         panel.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -144,10 +145,11 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(20, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -173,22 +175,20 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(btnEjecutar, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(radioEDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGap(303, 303, 303)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 24, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -214,10 +214,13 @@ public class GUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(radioEDF)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEjecutar))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                                .addComponent(btnEjecutar)))
+                        .addGap(17, 17, 17))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
 
         pack();
@@ -238,18 +241,14 @@ public class GUI extends javax.swing.JFrame {
             
             this.graphResults(this.scheduler.ejecutar());
             
+            
+            this.panelInfoProcesos.setText(this.scheduler.getInfo());
             this.panelInfoPeriodos.setText("");
-            this.panelInfoProcesos.setText("");
-            for(Proceso p: this.scheduler.getProcesos()){
-                this.panelInfoProcesos.append(p.toStringInfo() + "\n");
-            }
             for(Tiempo t: this.scheduler.getLineaTiempo()){
                 if(t.isPeriodo())
                     this.panelInfoPeriodos.append(t.toString() + "\n");
             }
-            
-            this.scheduler.printLineaTiempo();
-            
+                   
         }
         else{
             JOptionPane.showMessageDialog(null, "debe haber al menos un proceso", "", JOptionPane.ERROR_MESSAGE);
@@ -288,7 +287,7 @@ public class GUI extends javax.swing.JFrame {
     
         this.procesosList.removeAll();
         for(Proceso p: this.procesos){
-            this.procesosList.add(p.toStringInfo());
+            this.procesosList.add(p.toString());
         }
     }
     
@@ -328,10 +327,6 @@ public class GUI extends javax.swing.JFrame {
         for(Tiempo t: this.scheduler.getLineaTiempo()){
             if(t.isPeriodo()){
                 for(int i: ((Periodo)t).getProcesos()){
-                    /*g.drawLine(xoffset + (t.getUnidadTiempo() * scaleX),
-                               yoffset - scaleHeight * (i - 1),
-                               xoffset + (t.getUnidadTiempo() * scaleX),
-                               yoffset - scaleHeight * i);*/
                     g.fillRect(xoffset + (t.getUnidadTiempo() * scaleX) - 1,
                                yoffset - scaleHeight * (i),
                                3,

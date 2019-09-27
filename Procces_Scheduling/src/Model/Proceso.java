@@ -134,17 +134,20 @@ public class Proceso {
     }
 
     
-    public String toStringInfo() {
+    
+    public String toStringInforme() {
         return "Proceso: " + numero + "\n" +
                "    periodo: " + periodo + "\n" +
                "    deadline: " + deadline + "\n" +
                "    tiempo: " + tiempo + "\n" +
-               "    ejecuciones: " + ejecuciones;
+               "    ejecuciones: " + ejecuciones + "\n" +
+               "    ejecuciones perdidas: " + ejecucionesPerdidas + "\n" + 
+               "    deadlines perdidas: " + deadlinesPerdidas + "\n";
     }
     
     @Override
     public String toString(){
-        return "Proceso: " + numero + " ejecuciones: " + ejecuciones;
+        return "Proceso: " + numero + " periodo: " + periodo + " deadline: " + deadline + " tiempo: " + tiempo;
     }
     
     public String toStringGrafico() {

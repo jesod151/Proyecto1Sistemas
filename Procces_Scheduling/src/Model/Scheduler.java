@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -20,10 +21,16 @@ public class Scheduler {
     private ArrayList<Proceso> procesos;
     private int tiempoTotal, modo;//0 = montonic, 1 = EFD
 
-    public Scheduler(ArrayList<Proceso> procesos, int tiempoTotal, int modo) {
+    public Scheduler() {
         this.lineaTiempo = new ArrayList();
-        this.procesos = procesos;
-        this.tiempoTotal = tiempoTotal;
+        this.procesos = new ArrayList();
+    }
+
+    public int getModo() {
+        return modo;
+    }
+
+    public void setModo(int modo) {
         this.modo = modo;
     }
 
@@ -62,7 +69,6 @@ public class Scheduler {
     
     private ArrayList<Tiempo> EjecutarEDF(){
         asignarPeriodos();
-        
         int multiplo = 1,
             maxMultiple = this.getMaxMultiple(),
             nextEarliest,
@@ -71,14 +77,16 @@ public class Scheduler {
         
         while(multiplo < maxMultiple){            
             for(int i = 0; i < this.procesos.size(); i++){
-                nextEarliest = this.getNextEarliestDeadline2(timeline, multiplo);
+                nextEarliest = this.getNextEarliestDeadline(timeline);
                 if(nextEarliest < 0){
                     continue;
                 }
                 toSort = this.getProceso(nextEarliest);
                 sortTiempo(new Ejecucion(toSort, timeline));
+                
                 timeline += toSort.getTiempo();
                 toSort.addEjecucion();
+                
             }            
             multiplo++;
         }
@@ -90,16 +98,14 @@ public class Scheduler {
         return null;
     }
     
-
-    
-    private int getNextEarliestDeadline2(int tiempo, int multiplo){
+    private int getNextEarliestDeadline(int tiempo){
         int earliestDeadline = Integer.MAX_VALUE, procesNumber = -1;
         for(Tiempo t: this.lineaTiempo){
             if(t.isPeriodo() 
                && t.getUnidadTiempo() >= tiempo 
                && t.getUnidadTiempo() < earliestDeadline){
                 for(Proceso p: this.procesos){
-                    if(((Periodo) t).isPeriodoOf(p.getNumero(), multiplo) 
+                    if(((Periodo) t).isPeriodoOf(p.getNumero()) 
                         && p.getEjecuciones() < ((Periodo) t).getMultiploOfProceso(p.getNumero())){
                         procesNumber = p.getNumero();
                         earliestDeadline = t.getUnidadTiempo();
@@ -108,9 +114,8 @@ public class Scheduler {
             }
         }
         return procesNumber;
-    
     }
-    
+  
     private void asignarPeriodos(){
         
         int multiploTiempo = 1;

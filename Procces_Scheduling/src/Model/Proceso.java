@@ -37,6 +37,19 @@ public class Proceso {
         instances++;
     }
 
+    public Proceso(int numero, int periodo, int deadline, int tiempo, Color color) {
+        this.numero = numero;
+        this.periodo = periodo;
+        this.deadline = deadline;
+        this.tiempo = tiempo;
+        this.deadlinesPerdidas = 0;
+        this.ejecuciones = 0;
+        this.ejecucionesPerdidas = 0;
+        this.color = color;
+    }
+    
+    
+
     public int getPeriodo() {
         return periodo;
     }
@@ -97,12 +110,16 @@ public class Proceso {
         this.color = color;
     }
     
-    public void missDeadline(){
-        this.deadlinesPerdidas++;
-    }
-    
     public void addEjecucion(){
         this.ejecuciones++;
+    }
+    
+    public void addEjecucionPerdida(){
+        this.ejecucionesPerdidas++;
+    }
+    
+    public void addDeadlinePerdida(){
+        this.deadlinesPerdidas++;
     }
     
     public void missEjecucion(){
@@ -111,12 +128,27 @@ public class Proceso {
     
     public void generateColor(){
         Random r = new Random();
-        this.color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+        this.color = new Color(r.nextInt(50),//r
+                                r.nextInt(255),//g
+                                r.nextInt(255));//b
     }
 
+    
+    public String toStringInfo() {
+        return "Proceso: " + numero + "\n" +
+               "    periodo: " + periodo + "\n" +
+               "    deadline: " + deadline + "\n" +
+               "    tiempo: " + tiempo + "\n" +
+               "    ejecuciones: " + ejecuciones;
+    }
+    
     @Override
-    public String toString() {
-        return "p: " + numero + " ejec: " + ejecuciones;
+    public String toString(){
+        return "Proceso: " + numero + " ejecuciones: " + ejecuciones;
+    }
+    
+    public String toStringGrafico() {
+        return "Proceso: " + numero;
     }
 
     

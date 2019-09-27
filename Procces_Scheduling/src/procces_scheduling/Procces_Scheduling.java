@@ -24,25 +24,8 @@ public class Procces_Scheduling {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-       
-        ArrayList<Proceso> a = new ArrayList();
-        a.add(new Proceso(4, 4, 1));
-        a.add(new Proceso(6, 6, 2));
-        a.add(new Proceso(8, 8, 3));
-        
-        
-        /*a.add(new Proceso(5, 5, 2));
-        a.add(new Proceso(6, 6, 2));
-        a.add(new Proceso(7, 7, 2));
-        a.add(new Proceso(8, 8, 2));*/
-        
-        Scheduler sche = new Scheduler(a, 24, 1);
-        
-        GUI gui = new GUI(sche.ejecutar(), sche.getProcesos());
+        GUI gui = new GUI();
         gui.show(true);
-       
-        sche.printLineaTiempo();
-        
     }
     
 }

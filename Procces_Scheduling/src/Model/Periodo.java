@@ -54,11 +54,7 @@ public class Periodo extends Tiempo{
         return true;
     }
 
-    public boolean isPeriodoOf(int proceso, int multiplo) {
-        /*if(this.procesos.indexOf(proceso) < 0){
-            return false;
-        }
-        return this.multiploPeriodo.get(this.procesos.indexOf(proceso)) >= multiplo;*/
+    public boolean isPeriodoOf(int proceso) {
         return this.procesos.contains(proceso);
     }
     
@@ -74,7 +70,7 @@ public class Periodo extends Tiempo{
 
     @Override
     public String toString() {
-        return "Multiplo: " + this.multiploPeriodo + " Periodo: " + super.getUnidadTiempo() + " procesos: " + procesos;
+        return "Periodo: " + super.getUnidadTiempo() + " procesos: " + procesos;
     }
     
     

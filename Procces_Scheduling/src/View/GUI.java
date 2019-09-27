@@ -6,10 +6,14 @@
 package View;
 
 import Model.Ejecucion;
+import Model.Periodo;
 import Model.Proceso;
+import Model.Scheduler;
 import Model.Tiempo;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,22 +22,27 @@ import java.util.ArrayList;
 public class GUI extends javax.swing.JFrame {
 
     private Graphics g;
-    private ArrayList<Tiempo> result;
     private ArrayList<Proceso> procesos;
+    private Scheduler scheduler = new Scheduler();
     
     /**
      * Creates new form GUI
      */
-    public GUI(ArrayList<Tiempo> result, ArrayList<Proceso> procesos) {
+    public GUI() {
         initComponents();
         g = this.panel.getGraphics();
-        this.result = result;
-        this.procesos = procesos;
+        this.procesos = new ArrayList();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
+        
+        //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));
+        //this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));
+        //this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));
+        
+        this.setProcesos();
+        
     }
 
-    private GUI() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,10 +53,29 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup3 = new javax.swing.ButtonGroup();
         panel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnEjecutar = new javax.swing.JButton();
+        procesosList = new java.awt.List();
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        PeriodoSpinner = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
+        DeadlineSpinner = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        TiempoSpinner = new javax.swing.JSpinner();
+        radioEDF = new javax.swing.JRadioButton();
+        radioMontonic = new javax.swing.JRadioButton();
+        lineaTiempoSpinner = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        panelInfoPeriodos = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        panelInfoProcesos = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        panel.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -57,15 +85,60 @@ public class GUI extends javax.swing.JFrame {
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 381, Short.MAX_VALUE)
+            .addGap(0, 527, Short.MAX_VALUE)
         );
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEjecutar.setText("Ejecutar");
+        btnEjecutar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEjecutarActionPerformed(evt);
             }
         });
+
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        PeriodoSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        jLabel1.setText("Periodo");
+
+        DeadlineSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        jLabel2.setText("Deadline");
+
+        jLabel3.setText("Tiempo");
+
+        TiempoSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        buttonGroup3.add(radioEDF);
+        radioEDF.setSelected(true);
+        radioEDF.setText("EDF");
+
+        buttonGroup3.add(radioMontonic);
+        radioMontonic.setText("Rate Montonic");
+
+        lineaTiempoSpinner.setModel(new javax.swing.SpinnerNumberModel(24, 1, null, 1));
+
+        panelInfoPeriodos.setEditable(false);
+        panelInfoPeriodos.setColumns(20);
+        panelInfoPeriodos.setRows(5);
+        jScrollPane1.setViewportView(panelInfoPeriodos);
+
+        panelInfoProcesos.setEditable(false);
+        panelInfoProcesos.setColumns(20);
+        panelInfoProcesos.setRows(5);
+        jScrollPane2.setViewportView(panelInfoProcesos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,8 +147,36 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(997, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnAdd)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(TiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(DeadlineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(PeriodoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDelete)))
+                        .addGap(156, 156, 156)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(radioMontonic, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEjecutar, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(radioEDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -84,44 +185,176 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 24, Short.MAX_VALUE)
+                        .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(PeriodoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnDelete)
+                                .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(DeadlineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                                    .addComponent(TiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAdd))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(radioMontonic)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(radioEDF)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnEjecutar))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         // TODO add your handling code here:
-        int timeline = 0, yoffset = 100, xoffset = 100;
-        int scaleX = 1000 / this.result.get(this.result.size()-1).getUnidadTiempo();
-        for(Tiempo t: this.result){
+        this.scheduler = new Scheduler();
+        if(this.procesos.size() > 0){
+            if(this.radioEDF.isSelected()){
+                this.scheduler.setModo(1);
+            }
+            else{
+                this.scheduler.setModo(0);
+            }
+            this.scheduler.setTiempoTotal((int) this.lineaTiempoSpinner.getValue());
+            this.scheduler.setProcesos(this.cloneProcesos());
+            
+            this.graphResults(this.scheduler.ejecutar());
+            
+            this.panelInfoPeriodos.setText("");
+            this.panelInfoProcesos.setText("");
+            for(Proceso p: this.scheduler.getProcesos()){
+                this.panelInfoProcesos.append(p.toStringInfo() + "\n");
+            }
+            for(Tiempo t: this.scheduler.getLineaTiempo()){
+                if(t.isPeriodo())
+                    this.panelInfoPeriodos.append(t.toString() + "\n");
+            }
+            
+            this.scheduler.printLineaTiempo();
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "debe haber al menos un proceso", "", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEjecutarActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        this.procesos.add(new Proceso((int) this.PeriodoSpinner.getValue(),
+                (int) this.DeadlineSpinner.getValue(),
+                (int) this.TiempoSpinner.getValue()));
+        setProcesos();
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        if(this.procesosList.getSelectedIndex() >= 0){
+            this.procesos.remove(this.procesosList.getSelectedIndex());
+            setProcesos();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "debe seleccionar un proceso", "", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    public ArrayList<Proceso> cloneProcesos(){
+        ArrayList<Proceso> clon = new ArrayList();
+        for(Proceso p: this.procesos){
+            clon.add(new Proceso(p.getNumero(), p.getPeriodo(), p.getDeadline(), p.getTiempo(), p.getColor()));
+        }
+        return clon;
+    }
+    
+    public void setProcesos(){
+    
+        this.procesosList.removeAll();
+        for(Proceso p: this.procesos){
+            this.procesosList.add(p.toStringInfo());
+        }
+    }
+    
+    public void graphResults(ArrayList<Tiempo> result){
+        
+        //grafico de procesos
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
+        int timeline = 0, yoffset = this.panel.getHeight() - 25, xoffset = 125;
+        int scaleX = (this.panel.getWidth() - 50 - xoffset) / this.scheduler.getTiempoTotal(), scaleHeight = 20;//result.get(result.size()-1).getUnidadTiempo();
+        
+        xoffset -= 50;
+        for(Tiempo t: result){
             if(!t.isPeriodo()){
                 g.setColor(((Ejecucion) t).getP().getColor());
                 g.fillRect(xoffset + (timeline * scaleX),
-                        yoffset + (((Ejecucion) t).getP().getNumero() * 10),
+                        yoffset - (((Ejecucion) t).getP().getNumero() * scaleHeight),
                         (((Ejecucion) t).getP().getTiempo() * scaleX),
-                        10);
+                        scaleHeight);
                 timeline += ((Ejecucion) t).getP().getTiempo();
             }
         }
         
-        int y = 50;
-        for(Proceso p: procesos){
-           
-            g.drawChars(p.toString().toCharArray(), 0, p.toString().toCharArray().length, 10, y - 5);
-            g.setColor(p.getColor());
-            g.fillRect(10, y, 20, 10);
-            
-            y+=30;
-            
+        //grafica la escala de tiempo
+        g.setColor(Color.BLACK);
+        g.drawLine(xoffset, yoffset, xoffset, 0);
+        g.drawLine(xoffset, yoffset, this.panel.getWidth(), yoffset);
+        for(timeline = 1; timeline <= this.scheduler.getTiempoTotal() + 1; timeline++){
+            g.setColor(Color.BLACK);
+            g.drawString(Integer.toString(timeline), xoffset + (timeline * scaleX) - 3, yoffset + 12);
+            g.setColor(Color.LIGHT_GRAY);
+            g.drawLine(xoffset + (timeline * scaleX), yoffset, xoffset + (timeline * scaleX), 0);
         }
         
+        //grafica periodos
+        g.setColor(Color.RED);
+        for(Tiempo t: this.scheduler.getLineaTiempo()){
+            if(t.isPeriodo()){
+                for(int i: ((Periodo)t).getProcesos()){
+                    /*g.drawLine(xoffset + (t.getUnidadTiempo() * scaleX),
+                               yoffset - scaleHeight * (i - 1),
+                               xoffset + (t.getUnidadTiempo() * scaleX),
+                               yoffset - scaleHeight * i);*/
+                    g.fillRect(xoffset + (t.getUnidadTiempo() * scaleX) - 1,
+                               yoffset - scaleHeight * (i),
+                               3,
+                               scaleHeight);
+                }
+                
+            }
+            
         
+        }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+        //grafica de información de procesos
+        for(int i = 0; i < this.procesos.size(); i++){
+            g.setColor(Color.BLACK);
+            g.drawString(this.procesos.get(i).toStringGrafico(),
+                        5,
+                        yoffset - (10 * i));
+            g.setColor(this.procesos.get(i).getColor());
+            g.fillRect(5, yoffset - (10 * i), 55, 10);
+            yoffset -= 15;   
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -158,7 +391,24 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JSpinner DeadlineSpinner;
+    private javax.swing.JSpinner PeriodoSpinner;
+    private javax.swing.JSpinner TiempoSpinner;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEjecutar;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner lineaTiempoSpinner;
     private javax.swing.JPanel panel;
+    private javax.swing.JTextArea panelInfoPeriodos;
+    private javax.swing.JTextArea panelInfoProcesos;
+    private java.awt.List procesosList;
+    private javax.swing.JRadioButton radioEDF;
+    private javax.swing.JRadioButton radioMontonic;
     // End of variables declaration//GEN-END:variables
 }

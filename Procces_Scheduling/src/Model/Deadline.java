@@ -12,11 +12,11 @@ import java.util.Collections;
  *
  * @author USUARIO
  */
-public class Periodo extends Tiempo{
+public class Deadline extends Tiempo{
     
     private ArrayList<Integer> procesos, multiploPeriodo;
 
-    public Periodo(int unidadTiempo, int multiploPeriodo, int proceso) {
+    public Deadline(int unidadTiempo, int multiploPeriodo, int proceso) {
         super(unidadTiempo);
         this.multiploPeriodo = new ArrayList();
         this.multiploPeriodo.add(multiploPeriodo);
@@ -32,7 +32,7 @@ public class Periodo extends Tiempo{
         this.procesos = procesos;
     }
     
-    public void addProceso(Periodo t){
+    public void addProceso(Deadline t){
         this.procesos.add(t.getProcesos().get(0));
         this.multiploPeriodo.add(t.getMultiploPeriodo().get(0));
     }
@@ -71,12 +71,6 @@ public class Periodo extends Tiempo{
 
     @Override
     public String toString() {
-        return "Periodo: " + super.getUnidadTiempo() + " procesos: " + procesos + " multiplos" + multiploPeriodo;
+        return "Deadline: " + super.getUnidadTiempo() + " procesos: " + procesos;
     }
-
-    
-    
-    
-    
-    
 }

@@ -6,7 +6,7 @@
 package View;
 
 import Model.Ejecucion;
-import Model.Periodo;
+import Model.Deadline;
 import Model.Proceso;
 import Model.Scheduler;
 import Model.Tiempo;
@@ -35,8 +35,9 @@ public class GUI extends javax.swing.JFrame {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
         
-        //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));
-        this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));
+        //this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));//video
+        this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));
+        //this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));
         //this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));
         
         this.setProcesos();
@@ -74,9 +75,11 @@ public class GUI extends javax.swing.JFrame {
         panelInfoProcesos = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAutoRequestFocus(false);
+        setBackground(new java.awt.Color(102, 102, 102));
         setResizable(false);
 
-        panel.setForeground(new java.awt.Color(0, 0, 0));
+        panel.setBackground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -129,7 +132,7 @@ public class GUI extends javax.swing.JFrame {
         buttonGroup3.add(radioMontonic);
         radioMontonic.setText("Rate Montonic");
 
-        lineaTiempoSpinner.setModel(new javax.swing.SpinnerNumberModel(24, 1, null, 1));
+        lineaTiempoSpinner.setModel(new javax.swing.SpinnerNumberModel(20, 1, null, 1));
 
         panelInfoPeriodos.setEditable(false);
         panelInfoPeriodos.setColumns(20);
@@ -247,8 +250,7 @@ public class GUI extends javax.swing.JFrame {
             for(Tiempo t: this.scheduler.getLineaTiempo()){
                 if(t.isPeriodo())
                     this.panelInfoPeriodos.append(t.toString() + "\n");
-            }
-                   
+            }      
         }
         else{
             JOptionPane.showMessageDialog(null, "debe haber al menos un proceso", "", JOptionPane.ERROR_MESSAGE);
@@ -267,6 +269,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(this.procesosList.getSelectedIndex() >= 0){
             this.procesos.remove(this.procesosList.getSelectedIndex());
+            Proceso.decInstances();
             setProcesos();
         }
         else{
@@ -294,11 +297,12 @@ public class GUI extends javax.swing.JFrame {
     public void graphResults(ArrayList<Tiempo> result){
         
         //grafico de procesos
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
         int timeline = 0, yoffset = this.panel.getHeight() - 25, xoffset = 125;
-        int scaleX = (this.panel.getWidth() - 50 - xoffset) / this.scheduler.getTiempoTotal(), scaleHeight = 20;//result.get(result.size()-1).getUnidadTiempo();
-        
+        int scaleX = (int) Math.floor(((this.panel.getWidth() - xoffset) / this.scheduler.getTiempoTotal()) + 1),
+                scaleHeight = 20;//(int) Math.floor((this.panel.getHeight() / this.scheduler.getProcesos().size()) + 1); //20;
+                
         xoffset -= 50;
         for(Tiempo t: result){
             if(!t.isPeriodo()){
@@ -312,39 +316,53 @@ public class GUI extends javax.swing.JFrame {
         }
         
         //grafica la escala de tiempo
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.drawLine(xoffset, yoffset, xoffset, 0);
         g.drawLine(xoffset, yoffset, this.panel.getWidth(), yoffset);
         for(timeline = 1; timeline <= this.scheduler.getTiempoTotal() + 1; timeline++){
-            g.setColor(Color.BLACK);
-            g.drawString(Integer.toString(timeline), xoffset + (timeline * scaleX) - 3, yoffset + 12);
-            g.setColor(Color.LIGHT_GRAY);
+            g.setColor(Color.GRAY);
             g.drawLine(xoffset + (timeline * scaleX), yoffset, xoffset + (timeline * scaleX), 0);
+            if(timeline % 3 == 0){
+                g.setColor(Color.WHITE);
+                g.drawString(Integer.toString(timeline), xoffset + (timeline * scaleX) - 3, yoffset + 12);
+            }
+            
         }
         
-        //grafica periodos
+        //grafica deadlines
         g.setColor(Color.RED);
         for(Tiempo t: this.scheduler.getLineaTiempo()){
             if(t.isPeriodo()){
-                for(int i: ((Periodo)t).getProcesos()){
+                for(int i: ((Deadline) t).getProcesos()){
                     g.fillRect(xoffset + (t.getUnidadTiempo() * scaleX) - 1,
                                yoffset - scaleHeight * (i),
                                3,
                                scaleHeight);
-                }
-                
+                }   
             }
-            
+        }
         
+        //grafica periodos
+        int multiplo = 1;
+        g.setColor(Color.WHITE);
+        for(Proceso p: this.scheduler.getProcesos()){
+            while(p.getPeriodo() * multiplo <= this.scheduler.getTiempoTotal()){
+                g.fillRect(xoffset + (p.getPeriodo() * multiplo * scaleX) - 1,
+                               yoffset - scaleHeight * (p.getNumero()),
+                               3,
+                               scaleHeight/2);
+                multiplo++;
+            }
+            multiplo = 1;
         }
         
         //grafica de información de procesos
-        for(int i = 0; i < this.procesos.size(); i++){
-            g.setColor(Color.BLACK);
-            g.drawString(this.procesos.get(i).toStringGrafico(),
+        for(int i = 0; i < this.scheduler.getProcesos().size(); i++){
+            g.setColor(Color.WHITE);
+            g.drawString(this.scheduler.getProcesos().get(i).toStringGrafico(),
                         5,
                         yoffset - (10 * i));
-            g.setColor(this.procesos.get(i).getColor());
+            g.setColor(this.scheduler.getProcesos().get(i).getColor());
             g.fillRect(5, yoffset - (10 * i), 55, 10);
             yoffset -= 15;   
         }

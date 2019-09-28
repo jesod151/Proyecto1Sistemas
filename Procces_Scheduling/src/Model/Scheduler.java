@@ -69,19 +69,23 @@ public class Scheduler {
     }
     
     private ArrayList<Tiempo> EjecutarEDF(){
-        asignarPeriodos();
+        asignarDeadlines();
+        for(Proceso p: this.procesos){
+            p.generateColor();
+        }
         int multiplo = 1,
             maxMultiple = this.getMaxMultiple(),
             nextEarliest,
             timeline = 0;
         Proceso toSort;
-        
+        System.out.println("multiplo: " + multiplo + " maxMultiplo: " + maxMultiple);
         while(multiplo < maxMultiple){ 
             for(int i = 0; i < this.procesos.size(); i++){
-                nextEarliest = this.getNextEarliestDeadline2(timeline);
+                nextEarliest = this.getNextEarliestDeadline(timeline);
                 if(nextEarliest < 0){
                     continue;
                 }
+                System.out.println("escoge: " + nextEarliest);
                 toSort = this.getProceso(nextEarliest);
                 sortTiempo(new Ejecucion(toSort, timeline));
                 timeline += toSort.getTiempo();
@@ -89,6 +93,7 @@ public class Scheduler {
             }            
             multiplo++;
         }
+        System.out.println("temrinaEDF");
         return this.lineaTiempo;
     }
 
@@ -97,9 +102,8 @@ public class Scheduler {
         int multiplo = 1;
         p.setEjecuciones(0);
         for(Tiempo t: this.lineaTiempo){
-            
             if(!t.isPeriodo() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
-                if(((Ejecucion) t).getUnidadTiempo() + ((Ejecucion) t).getP().getTiempo() <= ((Ejecucion) t).getP().getPeriodo() * multiplo){
+                if(((Ejecucion) t).getUnidadTiempo() + ((Ejecucion) t).getP().getTiempo() <= ((Ejecucion) t).getP().getDeadline() * multiplo){
                     p.addEjecucion();
                 }
                 else{
@@ -109,9 +113,10 @@ public class Scheduler {
                 multiplo++;
             }
         }
+        System.out.println("P: " + p.getNumero() + " ejecuciones: " + p.getEjecuciones());
     }
     
-    public String getInfo(){
+        public String getInfo(){
         
         int multiplo;
         Ejecucion e;
@@ -164,35 +169,17 @@ public class Scheduler {
     }
     
     private int getNextEarliestDeadline(int tiempo){
-        int earliestDeadline = Integer.MAX_VALUE, procesNumber = -1;
-        for(Tiempo t: this.lineaTiempo){
-            if(t.isPeriodo() 
-               && t.getUnidadTiempo() >= tiempo 
-               && t.getUnidadTiempo() < earliestDeadline){
-                for(Proceso p: this.procesos){
-                    if(((Periodo) t).isPeriodoOf(p.getNumero()) 
-                        && p.getEjecuciones() < ((Periodo) t).getMultiploOfProceso(p.getNumero())){
-                        procesNumber = p.getNumero();
-                        earliestDeadline = t.getUnidadTiempo();
-                    }
-                }
-            }
-        }
-        return procesNumber;
-    }
-    
-    private int getNextEarliestDeadline2(int tiempo){
         int earliestDeadline = Integer.MAX_VALUE;
-        Periodo tmp = null;
+        Deadline tmp = null;
         for(Tiempo t: this.lineaTiempo){
             if(t.isPeriodo() 
                && t.getUnidadTiempo() >= tiempo 
                && t.getUnidadTiempo() < earliestDeadline){
                 for(Proceso p: this.procesos){
-                    if(((Periodo) t).isPeriodoOf(p.getNumero()) 
-                        && p.getEjecuciones() < ((Periodo) t).getMultiploOfProceso(p.getNumero())){
+                    if(((Deadline) t).isPeriodoOf(p.getNumero()) 
+                        && p.getEjecuciones() < ((Deadline) t).getMultiploOfProceso(p.getNumero())){
                         earliestDeadline = t.getUnidadTiempo();
-                        tmp = (Periodo) t;
+                        tmp = (Deadline) t;
                     }
                 }
             }
@@ -204,14 +191,11 @@ public class Scheduler {
         else if(tmp.getProcesos().size() == 1){
             return tmp.getProcesos().get(0);
         }
-        else{
-            System.out.print("tiempo: " + tiempo);System.out.print("  hay empate en: " + tmp.toString());
-            
+        else{            
             ArrayList<Integer> result = new ArrayList();
             for(int i = 0; i < tmp.getMultiploPeriodo().size(); i++){
                 result.add(tmp.getMultiploPeriodo().get(i) - this.getProceso(tmp.getProcesos().get(i)).getEjecuciones());
             }
-            System.out.println("    diffs: " + result);
             int max = -1;
             for(int i: result){
                 if(i > max){
@@ -220,12 +204,10 @@ public class Scheduler {
             }
             ArrayList<Integer> procesos = new ArrayList();
             ArrayList<Integer> multiplos = new ArrayList();
-            
             for(int i = 0; i < tmp.getProcesos().size(); i++){
                 procesos.add(tmp.getProcesos().get(i));
                 multiplos.add(tmp.getMultiploPeriodo().get(i));
             }
-
             for(int i = 0; i < result.size(); i++){
                 if(result.get(i) != max){
                     result.remove(i);
@@ -234,38 +216,33 @@ public class Scheduler {
                     i = 0;
                 }
             }
-            
-            
-            
             Random r = new Random();
             max = r.nextInt(result.size());
-            System.out.println("va a entrar: " + procesos.get(max));
             return procesos.get(max);
-        
         }
     }
     
     
   
-    private void asignarPeriodos(){
+    private void asignarDeadlines(){
         
         int multiploTiempo = 1;
         
         for(Proceso p: this.procesos){
-            while(p.getPeriodo() * multiploTiempo <= this.tiempoTotal){
-                sortTiempo(new Periodo(p.getPeriodo() * multiploTiempo, multiploTiempo, p.getNumero()));
+            while(p.getDeadline() * multiploTiempo <= this.tiempoTotal){
+                sortTiempo(new Deadline(p.getDeadline() * multiploTiempo, multiploTiempo, p.getNumero()));
                 multiploTiempo++;
             }
             multiploTiempo = 1;
         }
     }
     
-    private int getMaxMultiple(){
+    public int getMaxMultiple(){
     
         int max = -1;
         for(Tiempo t: this.lineaTiempo){
-            if(t.isPeriodo() && ((Periodo) t).getMaxMultiplo() > max){
-                max = ((Periodo) t).getMaxMultiplo();
+            if(t.isPeriodo() && ((Deadline) t).getMaxMultiplo() > max){
+                max = ((Deadline) t).getMaxMultiplo();
             }
         }
         return max;
@@ -282,7 +259,7 @@ public class Scheduler {
                     && this.lineaTiempo.get(i).isPeriodo()
                     && this.lineaTiempo.get(i).getUnidadTiempo() == toSort.getUnidadTiempo()){
                 
-                ((Periodo) this.lineaTiempo.get(i)).addProceso((Periodo) toSort);
+                ((Deadline) this.lineaTiempo.get(i)).addProceso((Deadline) toSort);
                 return;
             }
         }

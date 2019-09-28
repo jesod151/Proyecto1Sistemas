@@ -7,6 +7,10 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="autoRequestFocus" type="boolean" value="false"/>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="66" green="66" red="66" type="rgb"/>
+    </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -133,7 +137,7 @@
   <SubComponents>
     <Container class="javax.swing.JPanel" name="panel">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
@@ -233,7 +237,7 @@
     <Component class="javax.swing.JSpinner" name="lineaTiempoSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="24" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="20" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
     </Component>

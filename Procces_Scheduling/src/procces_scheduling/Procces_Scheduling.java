@@ -6,7 +6,7 @@
 package procces_scheduling;
 
 import Model.Ejecucion;
-import Model.Periodo;
+import Model.Deadline;
 import Model.Proceso;
 import Model.Scheduler;
 import Model.Tiempo;

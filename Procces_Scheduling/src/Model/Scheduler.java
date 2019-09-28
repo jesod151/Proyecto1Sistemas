@@ -60,6 +60,7 @@ public class Scheduler {
     }
     
     public ArrayList<Tiempo> ejecutar(){
+        for(Proceso p: this.procesos){p.generateColor();}
         if(this.modo == 0){
             return EjecutarMontonic();
         }
@@ -69,6 +70,7 @@ public class Scheduler {
     }
     
     private ArrayList<Tiempo> EjecutarEDF(){
+        System.out.println("---------------------------------------------------");
         asignarDeadlines();
         for(Proceso p: this.procesos){
             p.generateColor();
@@ -78,23 +80,143 @@ public class Scheduler {
             nextEarliest,
             timeline = 0;
         Proceso toSort;
-        System.out.println("multiplo: " + multiplo + " maxMultiplo: " + maxMultiple);
-        while(multiplo < maxMultiple){ 
+        while(multiplo <= maxMultiple){ 
             for(int i = 0; i < this.procesos.size(); i++){
                 nextEarliest = this.getNextEarliestDeadline(timeline);
+                System.out.println("nextEarliest: " + nextEarliest);
                 if(nextEarliest < 0){
                     continue;
                 }
-                System.out.println("escoge: " + nextEarliest);
                 toSort = this.getProceso(nextEarliest);
+                if(timeline + toSort.getTiempo() > tiempoTotal){
+                    timeline += toSort.getTiempo();
+                    break;
+                }
                 sortTiempo(new Ejecucion(toSort, timeline));
                 timeline += toSort.getTiempo();
                 this.setEjecutions(toSort);
             }            
             multiplo++;
         }
-        System.out.println("temrinaEDF");
         return this.lineaTiempo;
+    }
+    
+    private int getNextEarliestDeadline(int tiempo){
+        System.out.println("tiempo: " + tiempo);
+        int earliestDeadline = Integer.MAX_VALUE;
+        Deadline tmp = null;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isPeriodo() 
+               && t.getUnidadTiempo() >= tiempo 
+               && t.getUnidadTiempo() < earliestDeadline){
+                for(Proceso p: this.procesos){
+                    if(((Deadline) t).isPeriodoOf(p.getNumero()) 
+                        && p.getEjecuciones() < ((Deadline) t).getMultiploOfProceso(p.getNumero())){
+                        earliestDeadline = t.getUnidadTiempo();
+                        tmp = (Deadline) t;
+                    }
+                }
+            }
+        }
+        
+        for(Proceso p: procesos){
+            System.out.print("p: " + p.getNumero() + " ejecuciones: " + p.getEjecuciones() + "--");
+        }
+        System.out.println("");
+        if(tmp != null){
+            System.out.println(tmp.toStrinG());
+        }
+        
+        if(tmp == null){
+            return -1;
+        }
+        if(tmp.getProcesos().size() == 1){
+            return tmp.getProcesos().get(0);
+        }
+        else{            
+            ArrayList<Integer> result = new ArrayList();
+            for(int i = 0; i < tmp.getMultiploPeriodo().size(); i++){
+                result.add(tmp.getMultiploPeriodo().get(i) - this.getProceso(tmp.getProcesos().get(i)).getEjecuciones());
+            }
+            int max = -1;
+            for(int i: result){
+                if(i > max){
+                    max = i;
+                }
+            }
+            System.out.println("max--->" + max);
+            Random r = new Random();
+            while(true){
+                for(int i = 0; i < result.size(); i++){
+                    if(result.get(i) == max  && r.nextDouble() >= 0.5){
+                        return tmp.getProcesos().get(i);
+                    }
+                }
+            }
+        }
+    }
+    
+    private ArrayList<Tiempo> EjecutarEDF2(){
+        asignarDeadlines();
+        
+        int nextEarliest, timeline = 0;
+        Proceso toSort;
+        while(timeline < tiempoTotal){ 
+            for(int i = 0; i < this.procesos.size(); i++){
+                nextEarliest = this.getNextEarliestDeadline2(timeline);System.out.println("nextEarliest: " + nextEarliest);System.out.println("");
+                if(nextEarliest < 0){
+                    timeline++;
+                    continue;
+                }
+                toSort = this.getProceso(nextEarliest);
+                if(timeline + toSort.getTiempo() > tiempoTotal){
+                    timeline += toSort.getTiempo();
+                    break;
+                }
+                sortTiempo(new Ejecucion(toSort, timeline));
+                timeline += toSort.getTiempo();
+                this.setEjecutions(toSort);
+            }
+        }
+        return this.lineaTiempo;
+    }
+    
+    private int getNextEarliestDeadline2(int tiempo){
+        
+        Deadline tmp = null;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isPeriodo() 
+               && t.getUnidadTiempo() >= tiempo){
+                tmp = (Deadline) t;
+                break;
+            }
+        }
+        if(tmp == null){
+            return -1;
+        }
+        ArrayList<Integer> result = new ArrayList();
+        for(int i = 0; i < tmp.getMultiploPeriodo().size(); i++){
+            result.add(tmp.getMultiploPeriodo().get(i) - this.getProceso(tmp.getProcesos().get(i)).getEjecuciones());
+        }
+        int max = -1;
+        for(int i: result){
+            if(i > max){
+                max = i;
+            }
+        }
+        
+        if(max == 0 && tiempo != tmp.getUnidadTiempo()){
+            return -1;
+        }
+        
+        Random r = new Random();
+        while(true){
+            for(int i = 0; i < result.size(); i++){
+                if(result.get(i) == max && r.nextDouble() >= 0.5){
+                    return tmp.getProcesos().get(i);
+                }
+            }
+        }
     }
 
     public void setEjecutions(Proceso p){
@@ -105,15 +227,17 @@ public class Scheduler {
             if(!t.isPeriodo() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
                 if(((Ejecucion) t).getUnidadTiempo() + ((Ejecucion) t).getP().getTiempo() <= ((Ejecucion) t).getP().getDeadline() * multiplo){
                     p.addEjecucion();
+                    multiplo++;
                 }
                 else{
                     p.addEjecucion();
                     p.addEjecucion();
+                    multiplo++;
+                    multiplo++;
                 }
-                multiplo++;
+                //multiplo++;
             }
         }
-        System.out.println("P: " + p.getNumero() + " ejecuciones: " + p.getEjecuciones());
     }
     
         public String getInfo(){
@@ -167,62 +291,6 @@ public class Scheduler {
     private ArrayList<Tiempo> EjecutarMontonic(){
         return null;
     }
-    
-    private int getNextEarliestDeadline(int tiempo){
-        int earliestDeadline = Integer.MAX_VALUE;
-        Deadline tmp = null;
-        for(Tiempo t: this.lineaTiempo){
-            if(t.isPeriodo() 
-               && t.getUnidadTiempo() >= tiempo 
-               && t.getUnidadTiempo() < earliestDeadline){
-                for(Proceso p: this.procesos){
-                    if(((Deadline) t).isPeriodoOf(p.getNumero()) 
-                        && p.getEjecuciones() < ((Deadline) t).getMultiploOfProceso(p.getNumero())){
-                        earliestDeadline = t.getUnidadTiempo();
-                        tmp = (Deadline) t;
-                    }
-                }
-            }
-        }
-        
-        if(tmp == null){
-            return -1;
-        }
-        else if(tmp.getProcesos().size() == 1){
-            return tmp.getProcesos().get(0);
-        }
-        else{            
-            ArrayList<Integer> result = new ArrayList();
-            for(int i = 0; i < tmp.getMultiploPeriodo().size(); i++){
-                result.add(tmp.getMultiploPeriodo().get(i) - this.getProceso(tmp.getProcesos().get(i)).getEjecuciones());
-            }
-            int max = -1;
-            for(int i: result){
-                if(i > max){
-                    max = i;
-                }
-            }
-            ArrayList<Integer> procesos = new ArrayList();
-            ArrayList<Integer> multiplos = new ArrayList();
-            for(int i = 0; i < tmp.getProcesos().size(); i++){
-                procesos.add(tmp.getProcesos().get(i));
-                multiplos.add(tmp.getMultiploPeriodo().get(i));
-            }
-            for(int i = 0; i < result.size(); i++){
-                if(result.get(i) != max){
-                    result.remove(i);
-                    procesos.remove(i);
-                    multiplos.remove(i);
-                    i = 0;
-                }
-            }
-            Random r = new Random();
-            max = r.nextInt(result.size());
-            return procesos.get(max);
-        }
-    }
-    
-    
   
     private void asignarDeadlines(){
         

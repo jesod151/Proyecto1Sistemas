@@ -12,6 +12,7 @@ import Model.Scheduler;
 import Model.Tiempo;
 import View.GUI;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -24,8 +25,23 @@ public class Procces_Scheduling {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        GUI gui = new GUI();
-        gui.show(true);
+        /*String request;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Para menu m / para interfaz i: ");
+        request = in.nextLine();
+        
+        if(request.equals("m")){
+            
+        }else if(request.equals("i")){*/
+            GUI gui = new GUI();
+            gui.show(true);
+        /*}
+        else{
+            System.out.println("Para menu m / para interfaz i: ");
+            request = in.nextLine();
+        }*/
+        
+        
     }
     
 }

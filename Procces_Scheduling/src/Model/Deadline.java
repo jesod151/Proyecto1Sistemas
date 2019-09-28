@@ -73,4 +73,9 @@ public class Deadline extends Tiempo{
     public String toString() {
         return "Deadline: " + super.getUnidadTiempo() + " procesos: " + procesos;
     }
+    
+    
+    public String toStrinG() {
+        return "Deadline: " + super.getUnidadTiempo() + " procesos: " + procesos + " multiplos: " + multiploPeriodo;
+    }
 }

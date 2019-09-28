@@ -35,10 +35,12 @@ public class GUI extends javax.swing.JFrame {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
         
-        //this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));//video
-        this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));
+        
+        this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));//video
+        //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));
         //this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));
         //this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));
+        //this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));
         
         this.setProcesos();
         
@@ -132,7 +134,7 @@ public class GUI extends javax.swing.JFrame {
         buttonGroup3.add(radioMontonic);
         radioMontonic.setText("Rate Montonic");
 
-        lineaTiempoSpinner.setModel(new javax.swing.SpinnerNumberModel(20, 1, null, 1));
+        lineaTiempoSpinner.setModel(new javax.swing.SpinnerNumberModel(24, 1, null, 1));
 
         panelInfoPeriodos.setEditable(false);
         panelInfoPeriodos.setColumns(20);
@@ -148,11 +150,11 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -178,11 +180,11 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(btnEjecutar, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(radioEDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(303, 303, 303)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)))
-                .addGap(18, 18, 18))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +250,7 @@ public class GUI extends javax.swing.JFrame {
             this.panelInfoProcesos.setText(this.scheduler.getInfo());
             this.panelInfoPeriodos.setText("");
             for(Tiempo t: this.scheduler.getLineaTiempo()){
-                if(t.isPeriodo())
+                //if(t.isPeriodo())
                     this.panelInfoPeriodos.append(t.toString() + "\n");
             }      
         }
@@ -307,7 +309,7 @@ public class GUI extends javax.swing.JFrame {
         for(Tiempo t: result){
             if(!t.isPeriodo()){
                 g.setColor(((Ejecucion) t).getP().getColor());
-                g.fillRect(xoffset + (timeline * scaleX),
+                g.fillRect(xoffset + (((Ejecucion) t).getUnidadTiempo() * scaleX),
                         yoffset - (((Ejecucion) t).getP().getNumero() * scaleHeight),
                         (((Ejecucion) t).getP().getTiempo() * scaleX),
                         scaleHeight);

@@ -1,3 +1,1 @@
-verificar cuando ya se ejecutarion los procesos antes de que pasen sus deadlines, se espera o continua ejecutando igual?
-
-problemas al elegir procesos aleatoriamente
+fix informe de ejecución

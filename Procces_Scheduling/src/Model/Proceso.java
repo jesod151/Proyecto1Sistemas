@@ -150,11 +150,11 @@ public class Proceso {
     
     @Override
     public String toString(){
-        return "Proceso: " + numero + " periodo: " + periodo + " deadline: " + deadline + " tiempo: " + tiempo;
+        return "Proceso: " + numero;
     }
     
     public String toStringGrafico() {
-        return "Proceso: " + numero;
+        return "Proceso: " + numero + " periodo: " + periodo + " deadline: " + deadline + " tiempo: " + tiempo;
     }
 
     

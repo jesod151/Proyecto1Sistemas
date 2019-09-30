@@ -131,9 +131,9 @@ public class Proceso {
     public void generateColor(){
         Random r = new Random();
         
-        this.color = new Color(255 - r.nextInt(150),//r
-                               255 - r.nextInt(150),//g
-                               255 - r.nextInt(150));//b
+        this.color = new Color(255 - r.nextInt(200),//r
+                               255 - r.nextInt(200),//g
+                               255 - r.nextInt(200));//b
     }
 
     

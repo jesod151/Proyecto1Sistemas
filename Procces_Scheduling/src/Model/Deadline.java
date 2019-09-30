@@ -86,7 +86,7 @@ public class Deadline extends Tiempo{
 
     @Override
     public String toString() {
-        return "Deadline: " + super.getUnidadTiempo() + " procesos: " + procesos;
+        return "Tiempo: " + this.getUnidadTiempo() + " deadline: " + super.getUnidadTiempo() + " procesos: " + procesos;
     }
     
     

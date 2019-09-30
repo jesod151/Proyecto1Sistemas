@@ -30,7 +30,7 @@ public class Ejecucion extends Tiempo{
 
     @Override
     public String toString() {
-        return "Ejecucion: " + super.getUnidadTiempo() + " " + p;
+        return "Tiempo: " + this.getUnidadTiempo() + " ejecucion: " + super.getUnidadTiempo() + " " + p + " termina en: " + (this.getUnidadTiempo() + p.getTiempo());
     }
     
     @Override

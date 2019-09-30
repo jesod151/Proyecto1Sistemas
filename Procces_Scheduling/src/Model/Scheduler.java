@@ -225,18 +225,20 @@ public class Scheduler {
                     if(e.getUnidadTiempo() + e.getP().getTiempo() <= e.getP().getPeriodo() * multiplo){
                         p.addEjecucion();
                     }
-                    else{
-                        p.addEjecucionPerdida();
-                    }
                     if(e.getUnidadTiempo() + e.getP().getTiempo() > (p.getPeriodo() * multiplo - (p.getPeriodo() - p.getDeadline()))){
                         p.addDeadlinePerdida();
                     }
                     multiplo++;
                 }
+                if(t.isPeriodo() && ((Periodo) t).isPeriodoOf(p.getNumero())){
+                    multiplo++;
+                }
             }
+            
             multiplo = getMaxMultipleOf(p.getNumero());
+            p.setEjecucionesPerdidas(multiplo - p.getEjecuciones());
             missedDeadlinesPercent = 0;
-            missedEjecutionsPercent  = 0;
+            missedEjecutionsPercent  = multiplo - p.getEjecuciones();
             ejecutionsPercent = 0;
 
             if(p.getDeadlinesPerdidas() > 0){

@@ -24,10 +24,16 @@ public class Menu {
     private Scheduler scheduler;
     private int modo = -1, rango = -1;
     
-    public Menu() {
+    public Menu(String[] args) {
         procesos = new ArrayList();
         scheduler = new Scheduler();
         in = new Scanner(System.in);
+        
+        if(args.length == 8){//. -i entrada.txt -o salida.txt -a EFD – t 1000
+            System.out.println();
+        }
+        
+        
         inicio();
     }
     

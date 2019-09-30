@@ -177,8 +177,6 @@ public class Scheduler {
                 }
             }
         }
-        
-    
     }
     
     public void setEjecutions(Proceso p){

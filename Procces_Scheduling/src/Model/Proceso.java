@@ -157,7 +157,9 @@ public class Proceso {
         return "Proceso: " + numero + " periodo: " + periodo + " deadline: " + deadline + " tiempo: " + tiempo;
     }
 
-    
+    public String toStringD(){
+        return "Proceso: " + numero + " ejecuciones: " + ejecuciones;
+    }
     
     
     

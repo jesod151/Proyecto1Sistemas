@@ -5,8 +5,6 @@
  */
 package Model;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author USUARIO
@@ -29,33 +27,17 @@ public class Ejecucion extends Tiempo{
     }
 
     @Override
-    public String toString() {
-        return "Tiempo: " + this.getUnidadTiempo() + " ejecucion: " + super.getUnidadTiempo() + " " + p + " termina en: " + (this.getUnidadTiempo() + p.getTiempo());
-    }
-    
-    @Override
-    public boolean isDeadline() {
-        return false;
-    }
-
-    @Override
     public boolean isPeriodo() {
         return false;
     }
 
-    @Override
-    public boolean isEjecucion() {
-        return true;
-    }
 
     @Override
-    public ArrayList<Integer> getProcesos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String toString() {
+        return "Ejecucion = " + super.getUnidadTiempo() + " " + p;
     }
-
-    @Override
-    public ArrayList<Integer> getMultiploPeriodo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+    
+    
     
 }

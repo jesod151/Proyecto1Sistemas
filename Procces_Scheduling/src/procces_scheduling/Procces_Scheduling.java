@@ -24,24 +24,10 @@ public class Procces_Scheduling {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        /*String request;
-        Scanner in = new Scanner(System.in);
-        System.out.println("Para menu m / para interfaz i: ");
-        request = in.nextLine();
-        
-        if(request.equals("m")){
-            
-        }else if(request.equals("i")){*/
-            GUI gui = new GUI();
-            gui.show(true);
-        /*}
-        else{
-            System.out.println("Para menu m / para interfaz i: ");
-            request = in.nextLine();
-        }*/
-        
-        
+        // TODO code application logic here        
+        Menu menu = new Menu(args);
+        //GUI gui = new GUI();
+        //gui.show(true);
     }
     
 }

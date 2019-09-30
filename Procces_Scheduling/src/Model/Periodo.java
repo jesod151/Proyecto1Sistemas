@@ -12,12 +12,12 @@ import java.util.Collections;
  *
  * @author USUARIO
  */
-public class Deadline extends Tiempo{
+public class Periodo extends Tiempo{
     
     private ArrayList<Integer> procesos, multiploPeriodo;
     private ArrayList<Boolean> isChecked;
 
-    public Deadline(int unidadTiempo, int multiploPeriodo, int proceso) {
+    public Periodo(int unidadTiempo, int multiploPeriodo, int proceso) {
         super(unidadTiempo);
         this.multiploPeriodo = new ArrayList();
         this.multiploPeriodo.add(multiploPeriodo);
@@ -35,7 +35,7 @@ public class Deadline extends Tiempo{
         this.procesos = procesos;
     }
     
-    public void addProceso(Deadline t){
+    public void addProceso(Periodo t){
         this.procesos.add(t.getProcesos().get(0));
         this.multiploPeriodo.add(t.getMultiploPeriodo().get(0));
         this.isChecked.add(false);
@@ -52,8 +52,8 @@ public class Deadline extends Tiempo{
     public int getMultiploOfProceso(int proceso){
         return this.multiploPeriodo.get(this.procesos.indexOf(proceso));
     }
-    
-    public boolean isDeadlineOf(int proceso) {
+
+    public boolean isPeriodoOf(int proceso) {
         return this.procesos.contains(proceso);
     }
     
@@ -63,15 +63,6 @@ public class Deadline extends Tiempo{
     
     public void check(int proceso){
         this.isChecked.set(this.procesos.indexOf(proceso), true);
-    }
-    
-    public boolean allChecked(){
-        for(boolean b: this.isChecked){
-            if(b == false){
-                return false;
-            }
-        }
-        return true;
     }
     
     public int getMaxMultiplo(){
@@ -86,22 +77,22 @@ public class Deadline extends Tiempo{
 
     @Override
     public String toString() {
-        return "Tiempo: " + this.getUnidadTiempo() + " deadline: " + super.getUnidadTiempo() + " procesos: " + procesos;
+        return "Tiempo: " + this.getUnidadTiempo() + " periodo: " + super.getUnidadTiempo() + " procesos: " + procesos;
     }
     
     
     public String toStrinG() {
-        return "Deadline: " + super.getUnidadTiempo() + " procesos: " + procesos + " multiplos: " + multiploPeriodo;
+        return "Periodo: " + super.getUnidadTiempo() + " procesos: " + procesos + " multiplos: " + multiploPeriodo;
     }
     
     @Override
     public boolean isDeadline() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isPeriodo() {
-        return false;
+        return true;
     }
 
     @Override

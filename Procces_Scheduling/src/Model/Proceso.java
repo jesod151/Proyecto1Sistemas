@@ -131,9 +131,9 @@ public class Proceso {
     public void generateColor(){
         Random r = new Random();
         
-        this.color = new Color(255 - r.nextInt(150),//r
-                               255 - r.nextInt(150),//g
-                               255 - r.nextInt(150));//b
+        this.color = new Color(255 - r.nextInt(200),//r
+                               255 - r.nextInt(200),//g
+                               255 - r.nextInt(200));//b
     }
 
     
@@ -150,14 +150,16 @@ public class Proceso {
     
     @Override
     public String toString(){
-        return "Proceso: " + numero + " periodo: " + periodo + " deadline: " + deadline + " tiempo: " + tiempo;
+        return "Proceso: " + numero;
     }
     
     public String toStringGrafico() {
-        return "Proceso: " + numero;
+        return "Proceso: " + numero + " periodo: " + periodo + " deadline: " + deadline + " tiempo: " + tiempo;
     }
 
-    
+    public String toStringD(){
+        return "Proceso: " + numero + " ejecuciones: " + ejecuciones;
+    }
     
     
     

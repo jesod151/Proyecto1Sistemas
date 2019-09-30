@@ -234,24 +234,24 @@ public class Scheduler {
                     multiplo++;
                 }
             }
-                multiplo--;//porque sale cuando el multiplo excede el tiempo, osea que tiene 1 de más
-                missedDeadlinesPercent = 0;
-                missedEjecutionsPercent  = 0;
-                ejecutionsPercent = 0;
-                         
-                if(p.getDeadlinesPerdidas() > 0){
-                    missedDeadlinesPercent = (double) p.getDeadlinesPerdidas() / (double) multiplo;
-                }
-                if(p.getEjecucionesPerdidas() > 0){
-                    missedEjecutionsPercent = (double) p.getEjecucionesPerdidas() / (double) multiplo;  
-                }
-                if(p.getEjecuciones() > 0){
-                    ejecutionsPercent = (double) p.getEjecuciones() / (double) multiplo;
-                }
-                result += p.toStringInforme() + "    ejecuciones esperadas: " + multiplo + "\n" + 
-                        "    %deadlines perdidas: " + df.format(missedDeadlinesPercent) + "\n" + 
-                        "    %ejecuciones a tiempo: " + df.format(ejecutionsPercent) + "\n" + 
-                        "    %ejecuciones perdidas: " + df.format(missedEjecutionsPercent) + "\n";
+            multiplo = getMaxMultipleOf(p.getNumero());
+            missedDeadlinesPercent = 0;
+            missedEjecutionsPercent  = 0;
+            ejecutionsPercent = 0;
+
+            if(p.getDeadlinesPerdidas() > 0){
+                missedDeadlinesPercent = (double) p.getDeadlinesPerdidas() / (double) multiplo;
+            }
+            if(p.getEjecucionesPerdidas() > 0){
+                missedEjecutionsPercent = (double) p.getEjecucionesPerdidas() / (double) multiplo;  
+            }
+            if(p.getEjecuciones() > 0){
+                ejecutionsPercent = (double) p.getEjecuciones() / (double) multiplo;
+            }
+            result += p.toStringInforme() + "    ejecuciones esperadas: " + multiplo + "\n" + 
+                    "    %deadlines perdidas: " + df.format(missedDeadlinesPercent) + "\n" + 
+                    "    %ejecuciones a tiempo: " + df.format(ejecutionsPercent) + "\n" + 
+                    "    %ejecuciones perdidas: " + df.format(missedEjecutionsPercent) + "\n";
         }
         return result;
     }
@@ -270,12 +270,25 @@ public class Scheduler {
         }
     }
     
-    public int getMaxMultiple(){
+    /*public int getMaxMultiple(){
     
         int max = -1;
         for(Tiempo t: this.lineaTiempo){
-            if(t.isPeriodo() && ((Deadline) t).getMaxMultiplo() > max){
+            if(t.isDeadline() && ((Deadline) t).getMaxMultiplo() > max){
                 max = ((Deadline) t).getMaxMultiplo();
+            }
+        }
+        return max;
+    }*/
+    
+    public int getMaxMultipleOf(int proceso){
+    
+        int max = -1;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isPeriodo() 
+               && ((Periodo) t).isPeriodoOf(proceso)
+               && ((Periodo) t).getMultiploOfProceso(proceso) > max){
+                max = ((Periodo) t).getMultiploOfProceso(proceso);
             }
         }
         return max;

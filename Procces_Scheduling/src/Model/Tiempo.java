@@ -5,6 +5,8 @@
  */
 package Model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author USUARIO
@@ -25,6 +27,11 @@ public abstract class Tiempo {
         this.unidadTiempo = unidadTiempo;
     }
     
+    public abstract boolean isDeadline();
     public abstract boolean isPeriodo();
+    public abstract boolean isEjecucion();
+    public abstract ArrayList<Integer> getProcesos();
+    public abstract ArrayList<Integer> getMultiploPeriodo();
+    
     
 }

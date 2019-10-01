@@ -6,6 +6,8 @@
 package Model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -16,11 +18,11 @@ import org.json.JSONArray;
  *
  * @author Jil
  */
-public class FileReader {
+public class FileManager {
 
-    private String path;
-
-    public FileReader(String path) {
+    private String path, output;
+    
+    public FileManager(String path) {
         this.path = path;
     }
     
@@ -30,6 +32,14 @@ public class FileReader {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
     }
     
     public ArrayList<Proceso> readProcesos(){
@@ -53,13 +63,23 @@ public class FileReader {
         JSONArray json = new JSONArray(lista);
         ArrayList<Proceso> result = new ArrayList();
         for(int i = 0; i < json.length(); i++){
-            result.add(new Proceso(json.getJSONObject(i).getInt("Periodo"),
-                                   json.getJSONObject(i).getInt("Deadline"),
-                                   json.getJSONObject(i).getInt("Tiempo")));
+            result.add(new Proceso(json.getJSONObject(i).getInt("periodo"),
+                                   json.getJSONObject(i).getInt("deadline"),
+                                   json.getJSONObject(i).getInt("tiempo")));
         }
-
+        System.out.println(result);
         return result;
     
     }
     
+    public void write(String response){
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(this.output));
+            writer.write(response);
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
 }

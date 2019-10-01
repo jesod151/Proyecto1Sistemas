@@ -5,6 +5,7 @@
  */
 package procces_scheduling;
 
+import Model.FileManager;
 import Model.Proceso;
 import Model.Scheduler;
 import Model.Tiempo;
@@ -23,16 +24,40 @@ public class Menu {
     private ArrayList<Proceso> procesos;
     private Scheduler scheduler;
     private int modo = -1, rango = -1;
+    private FileManager fr;
     
     public Menu(String[] args) {
         procesos = new ArrayList();
         scheduler = new Scheduler();
         in = new Scanner(System.in);
         
-        if(args.length == 8){//. -i entrada.txt -o salida.txt -a EFD – t 1000
-            System.out.println();
+        if(args.length > 0){//. -i entrada.txt -o salida.txt -a EFD –t 1000
+            if(args.length == 8){
+                fr = new FileManager(args[1]);
+                this.scheduler.setProcesos(fr.readProcesos());
+                this.procesos = this.scheduler.getProcesos();
+                fr.setOutput(args[3]);
+                if(args[5].toUpperCase().equals("EDF")){
+                    this.modo = 0;
+                    this.scheduler.setModo(0);
+                }
+                else{
+                    this.modo = 1;
+                    this.scheduler.setModo(1);
+                }
+                try{
+                    this.rango = Integer.parseInt(args[7].trim());
+                    this.scheduler.setTiempoTotal(Integer.parseInt(args[7].trim()));
+                }
+                catch (NumberFormatException e)
+                {
+                  System.out.println("el parámetro -t no tiene el formato correcto, no se pudo definir el tiempo");
+                }
+            }
+            else{
+                System.out.println("no se declararon los argumentos correctos, deben ser -i path/entrada.txt -o path/salida.txt -a (EDF/MONTONIC) –t int");
+            }
         }
-        
         
         inicio();
     }
@@ -230,6 +255,8 @@ public class Menu {
         System.out.println(this.scheduler.getInfo());
         System.out.println("");
         System.out.println("");
+        
+        fr.setOutput(this.scheduler.getInfo());
     }
             
     public ArrayList<Proceso> cloneProcesos(){

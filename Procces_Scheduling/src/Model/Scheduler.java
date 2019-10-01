@@ -199,7 +199,7 @@ public class Scheduler {
         }
     }
     
-    public String getInfo(){
+    private String getInfoEDF(){
         
         int multiplo;
         Ejecucion e;
@@ -258,13 +258,11 @@ public class Scheduler {
         return result;
     }
     
-    
     private ArrayList<Tiempo> EjecutarMontonic(){
         asignarDeadlinesPeriodos();
         int timeline = 0;
         ArrayList<Ejecucion> stack = new ArrayList();
         Ejecucion inProcess, last;
-        
         
         stack = checkForNewExecutions(stack, timeline);
         inProcess = getHighestPriority(stack, timeline);
@@ -279,11 +277,11 @@ public class Scheduler {
         last = inProcess;
         
         while(timeline < this.tiempoTotal){
-            System.out.println("-------------------------------------------");
-            System.out.println("t->" + timeline);
-            for(Ejecucion e:stack){
-                System.out.println(e);
-            }
+            //System.out.println("-------------------------------------------");
+            //System.out.println("t->" + timeline);
+            //for(Ejecucion e:stack){
+            //    System.out.println(e);
+            //}
             stack = checkForNewExecutions(stack, timeline);
             inProcess = getHighestPriority(stack, timeline);
 
@@ -291,7 +289,7 @@ public class Scheduler {
                 timeline++;
                 continue;
             }
-            System.out.println("ejecutando: " + inProcess.toString());
+            //System.out.println("ejecutando: " + inProcess.toString());
             if(inProcess == last){
                 inProcess.succRemaining();
                 if(inProcess.isReady()){
@@ -329,8 +327,8 @@ public class Scheduler {
                    && t.getUnidadTiempo() > timeline 
                    && ((Periodo) t).isPeriodoOf(p.getNumero())){
                     if(!this.contains(stack, p.getNumero()) && (double)((Periodo) t).getMultiploOfProceso(p.getNumero()) - ejecutions >= 1){
-                        System.out.println(((Periodo) t).getMultiploOfProceso(p.getNumero()) + " - " + ejecutions);
-                        System.out.println(p.toStringD() + " --- se añade al stack en tiempo: " + timeline);
+                        //System.out.println(((Periodo) t).getMultiploOfProceso(p.getNumero()) + " - " + ejecutions);
+                        //System.out.println(p.toStringD() + " --- se añade al stack en tiempo: " + timeline);
                         stack.add(new Ejecucion(p, timeline, p.getTiempo()));
                     }
                     else{
@@ -388,6 +386,60 @@ public class Scheduler {
                     return stack.get(i);
                 }
             }
+        }
+    }
+    
+    private String getInfoMontonic() {
+
+        double ejecuciones;
+        int multiplo;
+        String result = "";
+        DecimalFormat df = new DecimalFormat("####0.00");
+        double missedDeadlinesPercent,
+                       missedEjecutionsPercent,
+                       ejecutionsPercent;
+        for(Proceso p: this.procesos){    
+            multiplo = 1;
+            for(Tiempo t: this.lineaTiempo){
+                if(t.isDeadline() && ((Deadline) t).isDeadlineOf(p.getNumero())){
+                    ejecuciones = this.getEjecucionesMontonic(p, t.getUnidadTiempo());
+                    if((double) multiplo - ejecuciones > 0){
+                        p.addDeadlinePerdida();
+                    }
+                    multiplo++;
+                }
+            }
+            
+            multiplo = getMaxMultipleOf(p.getNumero());
+            p.setEjecuciones((int) this.getEjecucionesMontonic(p, this.tiempoTotal) / p.getTiempo());
+            p.setEjecucionesPerdidas(multiplo - p.getEjecuciones());
+            missedDeadlinesPercent = 0;
+            missedEjecutionsPercent  = multiplo - p.getEjecuciones();
+            ejecutionsPercent = 0;
+
+            if(p.getDeadlinesPerdidas() > 0){
+                missedDeadlinesPercent = (double) (p.getDeadlinesPerdidas()) / (double) multiplo;
+            }
+            if(p.getEjecucionesPerdidas() > 0){
+                missedEjecutionsPercent = (double) p.getEjecucionesPerdidas() / (double) multiplo;  
+            }
+            if(p.getEjecuciones() > 0){
+                ejecutionsPercent = (double) p.getEjecuciones() / (double) multiplo;
+            }
+            result += p.toStringInforme() + "    ejecuciones esperadas: " + multiplo + "\n" + 
+                    "    %deadlines perdidas: " + df.format(missedDeadlinesPercent) + "\n" + 
+                    "    %ejecuciones a tiempo: " + df.format(ejecutionsPercent) + "\n" + 
+                    "    %ejecuciones perdidas: " + df.format(missedEjecutionsPercent) + "\n";
+        }
+        return result;
+    }
+    
+    public String getInfo(){
+        if(this.modo == 0){
+            return getInfoMontonic();
+        }
+        else{
+            return getInfoEDF();
         }
     }
     
@@ -457,7 +509,4 @@ public class Scheduler {
         return null;
     }
 
-    
-
-    
 }

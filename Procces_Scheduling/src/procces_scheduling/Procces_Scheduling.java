@@ -13,6 +13,7 @@ import Model.Tiempo;
 import View.GUI;
 import java.util.ArrayList;
 import java.util.Scanner;
+import org.json.JSONArray;
 
 /**
  *
@@ -25,9 +26,9 @@ public class Procces_Scheduling {
      */
     public static void main(String[] args) {
         // TODO code application logic here        
-        //Menu menu = new Menu(args);
-        GUI gui = new GUI();
-        gui.show(true);
+        Menu menu = new Menu(args);
+        //GUI gui = new GUI();
+        //gui.show(true);
         
     }
     

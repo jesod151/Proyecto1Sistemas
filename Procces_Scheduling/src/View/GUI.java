@@ -44,6 +44,9 @@ public class GUI extends javax.swing.JFrame {
         this.procesos = new ArrayList();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
+        this.panel.setVisible(false);
+        this.tableData.setVisible(false);
+        this.tableProcesos.setVisible(false);
         
         
         //this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));this.lineaTiempoSpinner.setValue(20);//video
@@ -125,11 +128,11 @@ public class GUI extends javax.swing.JFrame {
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 23, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 169, Short.MAX_VALUE)
+            .addGap(0, 27, Short.MAX_VALUE)
         );
 
         btnEjecutar.setText("Ejecutar");
@@ -230,15 +233,19 @@ public class GUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(PeriodoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete)
+                                .addGap(58, 58, 58))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -255,81 +262,88 @@ public class GUI extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(radioMontonic)
                                     .addComponent(radioEDF, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnEjecutar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnEjecutar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(PeriodoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete)
-                        .addGap(58, 58, 58)
+                                    .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(86, 86, 86)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel6)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1047, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(34, 34, 34)
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(btnDelete))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(PeriodoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(DeadlineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(TiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnAdd))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(radioMontonic)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(radioEDF)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnEjecutar))))
+                                .addGap(97, 97, 97)
+                                .addComponent(btnDelete))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(7, 7, 7)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(procesosList, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(PeriodoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(DeadlineSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(TiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnAdd))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel7)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(radioMontonic)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(radioEDF)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnEjecutar))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(243, 243, 243)
+                                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2)))
+                .addContainerGap())
         );
 
         pack();
@@ -349,7 +363,6 @@ public class GUI extends javax.swing.JFrame {
             this.scheduler.setProcesos(this.cloneProcesos());
             
             ArrayList<Tiempo> result = this.scheduler.ejecutar();
-            this.graphResults(result);
             this.setResult(result);
             
             this.panelInfoProcesos.setText(this.scheduler.getInfo());
@@ -401,7 +414,6 @@ public class GUI extends javax.swing.JFrame {
     }
     
     public void setProcesos(){
-    
         this.procesosList.removeAll();
         for(Proceso p: this.procesos){
             this.procesosList.add(p.toStringGrafico());
@@ -415,80 +427,6 @@ public class GUI extends javax.swing.JFrame {
             result.add(new Proceso(p.getPeriodo(), p.getDeadline(), p.getTiempo()));
         }
         procesos = result;
-    }
-    
-    public void graphResults(ArrayList<Tiempo> result){
-        
-        //grafico de procesos
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
-        int timeline = 0, yoffset = this.panel.getHeight() - 25, xoffset = 125;
-        int scaleX = (int) Math.floor(((this.panel.getWidth() - xoffset) / this.scheduler.getTiempoTotal()) + 1),
-                scaleHeight = 20;//(int) Math.floor((this.panel.getHeight() / this.scheduler.getProcesos().size()) + 1); //20;
-                
-        xoffset -= 50;
-        for(Tiempo t: result){
-            if(t.isEjecucion()){
-                g.setColor(((Ejecucion) t).getP().getColor());
-                g.fillRect(xoffset + (((Ejecucion) t).getUnidadTiempo() * scaleX),
-                        yoffset - (((Ejecucion) t).getP().getNumero() * scaleHeight),
-                        (((Ejecucion) t).getP().getTiempo() * scaleX),
-                        scaleHeight);
-                timeline += ((Ejecucion) t).getP().getTiempo();
-            }
-        }
-        
-        //grafica la escala de tiempo
-        g.setColor(Color.WHITE);
-        g.drawLine(xoffset, yoffset, xoffset, 0);
-        g.drawLine(xoffset, yoffset, this.panel.getWidth(), yoffset);
-        for(timeline = 1; timeline <= this.scheduler.getTiempoTotal() + 1; timeline++){
-            g.setColor(Color.GRAY);
-            g.drawLine(xoffset + (timeline * scaleX), yoffset, xoffset + (timeline * scaleX), 0);
-            if(timeline % 3 == 0){
-                g.setColor(Color.WHITE);
-                g.drawString(Integer.toString(timeline), xoffset + (timeline * scaleX) - 3, yoffset + 12);
-            }
-            
-        }
-        
-        //grafica deadlines
-        g.setColor(Color.RED);
-        for(Tiempo t: this.scheduler.getLineaTiempo()){
-            if(t.isDeadline()){
-                for(int i: ((Deadline) t).getProcesos()){
-                    g.fillRect(xoffset + (t.getUnidadTiempo() * scaleX) - 1,
-                               yoffset - scaleHeight * (i),
-                               3,
-                               scaleHeight);
-                }   
-            }
-        }
-        
-        //grafica periodos
-        int multiplo = 1;
-        g.setColor(Color.WHITE);
-        for(Proceso p: this.scheduler.getProcesos()){
-            while(p.getPeriodo() * multiplo <= this.scheduler.getTiempoTotal()){
-                g.fillRect(xoffset + (p.getPeriodo() * multiplo * scaleX) - 1,
-                               yoffset - scaleHeight * (p.getNumero()),
-                               3,
-                               scaleHeight/2);
-                multiplo++;
-            }
-            multiplo = 1;
-        }
-        
-        //grafica de información de procesos
-        for(int i = 0; i < this.scheduler.getProcesos().size(); i++){
-            g.setColor(Color.WHITE);
-            g.drawString(this.scheduler.getProcesos().get(i).toString(),
-                        5,
-                        yoffset - (10 * i));
-            g.setColor(this.scheduler.getProcesos().get(i).getColor());
-            g.fillRect(5, yoffset - (10 * i), 55, 10);
-            yoffset -= 15;   
-        }
     }
     
     private void setResult(ArrayList<Tiempo> result) {
@@ -518,9 +456,11 @@ public class GUI extends javax.swing.JFrame {
         model2.setColumnCount(1);
         this.tableProcesos.setModel(model2);
         
+        this.tableData.setVisible(true);
+        this.tableProcesos.setVisible(true);
+        
         for(int i = 0; i < this.procesos.size(); i++){
             this.tableProcesos.setValueAt(this.procesos.get(i).toString(), i, 0); 
-            
         }
         
         for(Tiempo t: result){
@@ -533,7 +473,6 @@ public class GUI extends javax.swing.JFrame {
                     else{
                         this.tableData.setValueAt(Integer.toString(((Ejecucion) t).getP().getNumero()), ((Ejecucion) t).getP().getNumero() - 1, i);
                     }
-                    
                 }
             }
             if(t.isPeriodo()){
@@ -544,7 +483,6 @@ public class GUI extends javax.swing.JFrame {
                     else{
                         this.tableData.setValueAt("P", i - 1, t.getUnidadTiempo() - 1);
                     }
-                    
                 }
             }
             if(t.isDeadline()){
@@ -649,5 +587,79 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTable tableProcesos;
     // End of variables declaration//GEN-END:variables
 
+    public void graphResults(ArrayList<Tiempo> result){
+        
+        //grafico de procesos
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
+        int timeline = 0, yoffset = this.panel.getHeight() - 25, xoffset = 125;
+        int scaleX = (int) Math.floor(((this.panel.getWidth() - xoffset) / this.scheduler.getTiempoTotal()) + 1),
+                scaleHeight = 20;//(int) Math.floor((this.panel.getHeight() / this.scheduler.getProcesos().size()) + 1); //20;
+                
+        xoffset -= 50;
+        for(Tiempo t: result){
+            if(t.isEjecucion()){
+                g.setColor(((Ejecucion) t).getP().getColor());
+                g.fillRect(xoffset + (((Ejecucion) t).getUnidadTiempo() * scaleX),
+                        yoffset - (((Ejecucion) t).getP().getNumero() * scaleHeight),
+                        (((Ejecucion) t).getP().getTiempo() * scaleX),
+                        scaleHeight);
+                timeline += ((Ejecucion) t).getP().getTiempo();
+            }
+        }
+        
+        //grafica la escala de tiempo
+        g.setColor(Color.WHITE);
+        g.drawLine(xoffset, yoffset, xoffset, 0);
+        g.drawLine(xoffset, yoffset, this.panel.getWidth(), yoffset);
+        for(timeline = 1; timeline <= this.scheduler.getTiempoTotal() + 1; timeline++){
+            g.setColor(Color.GRAY);
+            g.drawLine(xoffset + (timeline * scaleX), yoffset, xoffset + (timeline * scaleX), 0);
+            if(timeline % 3 == 0){
+                g.setColor(Color.WHITE);
+                g.drawString(Integer.toString(timeline), xoffset + (timeline * scaleX) - 3, yoffset + 12);
+            }
+            
+        }
+        
+        //grafica deadlines
+        g.setColor(Color.RED);
+        for(Tiempo t: this.scheduler.getLineaTiempo()){
+            if(t.isDeadline()){
+                for(int i: ((Deadline) t).getProcesos()){
+                    g.fillRect(xoffset + (t.getUnidadTiempo() * scaleX) - 1,
+                               yoffset - scaleHeight * (i),
+                               3,
+                               scaleHeight);
+                }   
+            }
+        }
+        
+        //grafica periodos
+        int multiplo = 1;
+        g.setColor(Color.WHITE);
+        for(Proceso p: this.scheduler.getProcesos()){
+            while(p.getPeriodo() * multiplo <= this.scheduler.getTiempoTotal()){
+                g.fillRect(xoffset + (p.getPeriodo() * multiplo * scaleX) - 1,
+                               yoffset - scaleHeight * (p.getNumero()),
+                               3,
+                               scaleHeight/2);
+                multiplo++;
+            }
+            multiplo = 1;
+        }
+        
+        //grafica de información de procesos
+        for(int i = 0; i < this.scheduler.getProcesos().size(); i++){
+            g.setColor(Color.WHITE);
+            g.drawString(this.scheduler.getProcesos().get(i).toString(),
+                        5,
+                        yoffset - (10 * i));
+            g.setColor(this.scheduler.getProcesos().get(i).getColor());
+            g.fillRect(5, yoffset - (10 * i), 55, 10);
+            yoffset -= 15;   
+        }
+    }
+    
 }
 

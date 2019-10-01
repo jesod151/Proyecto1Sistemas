@@ -28,6 +28,7 @@ public class Procces_Scheduling {
         //Menu menu = new Menu(args);
         GUI gui = new GUI();
         gui.show(true);
+        
     }
     
 }

@@ -77,7 +77,7 @@ public class Periodo extends Tiempo{
 
     @Override
     public String toString() {
-        return "Tiempo: " + this.getUnidadTiempo() + " periodo: " + super.getUnidadTiempo() + " procesos: " + procesos;
+        return "Periodo: " + this.getUnidadTiempo() + " periodo: " + super.getUnidadTiempo() + " procesos: " + procesos;
     }
     
     

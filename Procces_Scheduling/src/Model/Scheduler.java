@@ -280,6 +280,7 @@ public class Scheduler {
         
         while(timeline < this.tiempoTotal){
             System.out.println("-------------------------------------------");
+            System.out.println("t->" + timeline);
             for(Ejecucion e:stack){
                 System.out.println(e);
             }
@@ -308,7 +309,7 @@ public class Scheduler {
                 }
                 stack.remove(last);
                 if(last != null && !last.isReady()){
-                    stack.add(new Ejecucion(last.getP(), timeline, last.getP().getTiempo()));
+                    stack.add(new Ejecucion(last.getP(), timeline, last.getRemainning()));
                 }
             }
             last = inProcess;
@@ -319,7 +320,7 @@ public class Scheduler {
     }
     
     private ArrayList<Ejecucion> checkForNewExecutions(ArrayList<Ejecucion> stack, int timeline) {
-        System.out.println("t: " + timeline);
+        //System.out.println("t: " + timeline);
         double ejecutions;
         for(Proceso p: this.procesos){
             ejecutions = this.getEjecucionesMontonic(p, timeline);
@@ -356,7 +357,8 @@ public class Scheduler {
         int sumatoriaT = 0;
         for(Tiempo t: this.lineaTiempo){
             if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
-                sumatoriaT += p.getTiempo() - ((Ejecucion) t).getRemainning();
+                //sumatoriaT += p.getTiempo() - ((Ejecucion) t).getRemainning();
+                sumatoriaT += ((Ejecucion) t).getExcecutedTime();
             }
             if(t.isPeriodo() && t.getUnidadTiempo() > timeline && ((Periodo) t).isPeriodoOf(p.getNumero())){
                 return (double) sumatoriaT / p.getTiempo();

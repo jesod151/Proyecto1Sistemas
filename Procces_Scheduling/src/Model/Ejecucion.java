@@ -14,10 +14,33 @@ import java.util.ArrayList;
 public class Ejecucion extends Tiempo{
     
     private Proceso p;
+    private int remainning;
 
     public Ejecucion(Proceso p, int unidadTiempo) {
         super(unidadTiempo);
         this.p = p;
+    }
+    
+    public Ejecucion(Proceso p, int unidadTiempo, int remaining){
+        super(unidadTiempo);
+        this.p = p;
+        this.remainning = remaining;
+    }
+
+    public int getRemainning() {
+        return remainning;
+    }
+
+    public void setRemainning(int remainning) {
+        this.remainning = remainning;
+    }
+    
+    public void succRemaining(){
+        this.remainning--;
+    }
+    
+    public boolean isReady(){
+        return this.remainning == 0;
     }
 
     public Proceso getP() {
@@ -30,7 +53,7 @@ public class Ejecucion extends Tiempo{
 
     @Override
     public String toString() {
-        return "Tiempo: " + this.getUnidadTiempo() + " ejecucion: " + super.getUnidadTiempo() + " " + p + " termina en: " + (this.getUnidadTiempo() + p.getTiempo());
+        return "Tiempo: " + this.getUnidadTiempo() + " ejecucion: " + super.getUnidadTiempo() + " " + p + " remaining: " + remainning;
     }
     
     @Override

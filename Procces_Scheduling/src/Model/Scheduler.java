@@ -274,7 +274,6 @@ public class Scheduler {
         }
         timeline++;
         last = inProcess;
-        System.out.println("------------------------------------------------");
         while(timeline < this.tiempoTotal){
             stack = checkForNewExecutions(stack, timeline);
             inProcess = getHighestPriority(stack);
@@ -284,8 +283,7 @@ public class Scheduler {
                 continue;
             }
             //-------------------------------------------            
-            if(!this.canExecuteBeforePeriod(inProcess, timeline)){
-                
+            if(!this.canExecuteBeforePeriod(inProcess, timeline)){                
                 stack.remove(inProcess);
                 this.lineaTiempo.remove(inProcess);
                 inProcess = null;
@@ -448,9 +446,9 @@ public class Scheduler {
     private boolean canExecuteBeforePeriod(Ejecucion toExecute, int time){
         for(Tiempo t: this.lineaTiempo){
             if(t.isPeriodo() 
-               && t.getUnidadTiempo() > toExecute.getUnidadTiempo()
+               && t.getUnidadTiempo() > time
                && ((Periodo) t).isPeriodoOf(toExecute.getP().getNumero())){
-                if(time + toExecute.getRemainning() < t.getUnidadTiempo()){
+                if(time + toExecute.getRemainning() <= t.getUnidadTiempo()){
                     return true;
                 }
                 else{

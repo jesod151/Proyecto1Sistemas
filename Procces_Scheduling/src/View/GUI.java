@@ -57,6 +57,7 @@ public class GUI extends javax.swing.JFrame {
         
         
         //this.procesos.add(new Proceso(6, 6, 1));this.procesos.add(new Proceso(8, 8, 2));this.procesos.add(new Proceso(12, 12, 4));this.lineaTiempoSpinner.setValue(24);
+        //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(12, 12, 3));this.procesos.add(new Proceso(24, 24, 4));this.lineaTiempoSpinner.setValue(24);
         
         this.setProcesos();
         

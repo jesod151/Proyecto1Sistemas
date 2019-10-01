@@ -49,7 +49,7 @@ public class GUI extends javax.swing.JFrame {
         this.tableProcesos.setVisible(false);
         
         
-        this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));this.lineaTiempoSpinner.setValue(20);//video
+        this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));this.procesos.add(new Proceso(10, 7, 3));this.lineaTiempoSpinner.setValue(20);//video
         //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));this.lineaTiempoSpinner.setValue(24);
         //this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));this.lineaTiempoSpinner.setValue(24);
         //this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));
@@ -265,8 +265,7 @@ public class GUI extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnEjecutar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lineaTiempoSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

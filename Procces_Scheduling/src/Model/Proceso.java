@@ -134,7 +134,7 @@ public class Proceso {
     
     public void generateColor(){
         //Random r = new Random();
-        this.color = Color.DARK_GRAY;
+        this.color = Color.BLUE;
         /*this.color = new Color(255 - r.nextInt(50),//r
                                r.nextInt(255),//g
                                r.nextInt(255));//b*/

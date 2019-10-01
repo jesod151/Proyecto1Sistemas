@@ -87,6 +87,12 @@ public class Scheduler {
                 timeline += toSort.getTiempo();
                 break;
             }
+            //------------------------------------------------------------------------------------
+            if(!this.canExecuteBeforePeriod(new Ejecucion(toSort, timeline, toSort.getTiempo()))){
+                timeline++;
+                continue;
+            }
+            //------------------------------------------------------------------------------------
             sortTiempo(new Ejecucion(toSort, timeline));
             timeline += toSort.getTiempo();
             this.setEjecutionsEDF(toSort);
@@ -289,6 +295,14 @@ public class Scheduler {
                 timeline++;
                 continue;
             }
+            //-------------------------------------------
+            if(!this.canExecuteBeforePeriod(inProcess)){
+                stack.remove(inProcess);
+                inProcess = null;
+                timeline++;
+                continue;
+            }
+            //-------------------------------------------
             //System.out.println("ejecutando: " + inProcess.toString());
             if(inProcess == last){
                 inProcess.succRemaining();
@@ -441,6 +455,23 @@ public class Scheduler {
         else{
             return getInfoEDF();
         }
+    }
+    
+    private boolean canExecuteBeforePeriod(Ejecucion toExecute){
+        
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isPeriodo() 
+               && t.getUnidadTiempo() > toExecute.getUnidadTiempo()
+               && ((Periodo) t).isPeriodoOf(toExecute.getP().getNumero())){
+                if(toExecute.getUnidadTiempo() + toExecute.getRemainning() <= t.getUnidadTiempo()){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
     }
     
     private void asignarDeadlinesPeriodos(){

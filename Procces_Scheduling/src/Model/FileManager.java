@@ -39,7 +39,7 @@ public class FileManager {
     }
 
     public void setOutput(String output) {
-        this.output = output;
+        this.output = output.toString().trim();
     }
     
     public ArrayList<Proceso> readProcesos(){
@@ -67,18 +67,18 @@ public class FileManager {
                                    json.getJSONObject(i).getInt("deadline"),
                                    json.getJSONObject(i).getInt("tiempo")));
         }
-        System.out.println(result);
         return result;
-    
     }
     
     public void write(String response){
+        System.out.println("escribiendo en: " + this.output);
         BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter(this.output));
             writer.write(response);
             writer.close();
         } catch (IOException ex) {
+            System.out.println(ex.toString());
             Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
         }    
     }

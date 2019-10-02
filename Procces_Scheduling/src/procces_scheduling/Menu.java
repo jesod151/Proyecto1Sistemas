@@ -59,6 +59,9 @@ public class Menu {
                   System.out.println("el parámetro -t no tiene el formato correcto, no se pudo definir el tiempo");
                 }
             }
+            else if(args.length == 2){
+                this.manualDeUsuario();
+            }
             else{
                 System.out.println("no se declararon los argumentos correctos, deben ser -i path/entrada.txt -o path/salida.txt -a (EDF/MONTONIC) –t int");
             }

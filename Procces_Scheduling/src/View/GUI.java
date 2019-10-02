@@ -7,6 +7,7 @@ package View;
 
 import Model.Ejecucion;
 import Model.Deadline;
+import Model.FileManager;
 import Model.Periodo;
 import Model.Proceso;
 import Model.Scheduler;
@@ -33,6 +34,7 @@ public class GUI extends javax.swing.JFrame {
     private Graphics g;
     private ArrayList<Proceso> procesos;
     private Scheduler scheduler = new Scheduler();
+    private FileManager fm = new FileManager("");
     //private DefaultTableModel model;
     
     /**
@@ -40,10 +42,11 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
-        g = this.panel.getGraphics();
+        this.g = this.panel.getGraphics();
+        this.g.setColor(Color.WHITE);
+        this.g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
+        this.fm.setOutput("output.txt");
         this.procesos = new ArrayList();
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, this.panel.getWidth(), this.panel.getHeight());
         this.panel.setVisible(false);
         this.tableData.setVisible(false);
         this.tableProcesos.setVisible(false);

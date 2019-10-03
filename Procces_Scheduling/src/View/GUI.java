@@ -52,7 +52,7 @@ public class GUI extends javax.swing.JFrame {
         this.tableProcesos.setVisible(false);
         
         ///-------
-        this.procesos.add(new Proceso(4, 2, 1));this.procesos.add(new Proceso(6, 3, 2));this.procesos.add(new Proceso(12, 6, 3));this.procesos.add(new Proceso(24, 12, 4));this.lineaTiempoSpinner.setValue(24);
+        this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));this.procesos.add(new Proceso(10, 7, 3));this.lineaTiempoSpinner.setValue(20);//video
         ///-------
 
         

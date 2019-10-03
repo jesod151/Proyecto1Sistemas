@@ -85,15 +85,13 @@ public class Scheduler {
                 timeline += toSort.getTiempo();
                 break;
             }
-            //------------------------------------------------------------------------------------
             if(!this.canExecuteBeforePeriod(new Ejecucion(toSort, timeline, toSort.getTiempo()), timeline)){
                 timeline++;
                 continue;
             }
-            //------------------------------------------------------------------------------------
             sortTiempo(new Ejecucion(toSort, timeline));
             timeline += toSort.getTiempo();
-            this.setEjecutionsEDF(toSort);
+            toSort.setEjecuciones(this.getEjecutionsEDF(toSort));//this.setEjecutionsEDF(toSort);
         }
         return this.lineaTiempo;
     }
@@ -178,81 +176,78 @@ public class Scheduler {
         }
     }
     
-    public void setEjecutionsEDF(Proceso p){
+    public int getEjecutionsEDF(Proceso p){
     
-        int multiplo = 1;
+        int multiplo = 1, result = 0;
         p.setEjecuciones(0);
         for(Tiempo t: this.lineaTiempo){
             if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
                 if(((Ejecucion) t).getUnidadTiempo() + ((Ejecucion) t).getP().getTiempo() <= ((Ejecucion) t).getP().getPeriodo() * multiplo){
-                    p.addEjecucion();
+                    result++;
                     multiplo++;
                 }
                 else{
-                    p.addEjecucion();
-                    p.addEjecucion();
+                    result++;
+                    result++;
                     multiplo++;
                     multiplo++;
                 }
             }
         }
+        return result;
+    }
+    
+    public int getEjecucionesEDFInfo(Proceso p){
+        int multiplo = 1, result = 0;
+        Ejecucion e;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
+                e = ((Ejecucion) t);
+                if(e.getUnidadTiempo() + e.getP().getTiempo() <= e.getP().getPeriodo() * multiplo){
+                    result++;
+                }
+            }
+            if(t.isPeriodo() && ((Periodo) t).isPeriodoOf(p.getNumero())){
+                multiplo++;
+            }
+        }
+        return result;
+    }
+    
+    public int getDeadlinesPerdidasEDF(Proceso p){
+        int multiplo = 1, ejecuciones = 0, result = 0;
+        Ejecucion e;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
+                //ejecuciones++;
+                e = ((Ejecucion) t);
+                if(e.getUnidadTiempo() + e.getP().getTiempo() > (p.getPeriodo() * multiplo) - (p.getPeriodo() - p.getDeadline())){
+                    result++;
+                }
+            }
+            if(t.isPeriodo() && ((Periodo) t).isPeriodoOf(p.getNumero())){
+                /*if(ejecuciones < ((Periodo) t).getMultiploOfProceso(p.getNumero())){
+                    result++;
+                    ejecuciones++;
+                }*/
+                multiplo++;
+            }
+        }
+        return result;
     }
     
     private String getInfoEDF(){
         
-        int multiplo;
-        Ejecucion e;
+        int ejecucionesTotales;
         String result = "";
-        DecimalFormat df = new DecimalFormat("####0.00");
-        double missedDeadlinesPercent,
-                       missedEjecutionsPercent,
-                       ejecutionsPercent;
-        for(Proceso p: this.procesos){
-            p.setEjecuciones(0);
-            
-            multiplo = 1;
-            for(Tiempo t: this.lineaTiempo){
-                if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
-                    e = ((Ejecucion) t);
-                    if(e.getUnidadTiempo() + e.getP().getTiempo() > (p.getPeriodo() * multiplo) - (p.getPeriodo() - p.getDeadline())){
-                        p.addDeadlinePerdida();
-                    }
-                    multiplo++;
-                }
-            }
-            
-            multiplo = 1;
-            for(Tiempo t: this.lineaTiempo){
-                if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
-                    e = ((Ejecucion) t);
-                    if(e.getUnidadTiempo() + e.getP().getTiempo() <= e.getP().getPeriodo() * multiplo){
-                        p.addEjecucion();
-                    }
-                }
-                if(t.isPeriodo() && ((Periodo) t).isPeriodoOf(p.getNumero())){
-                    multiplo++;
-                }
-            }
-            
-            multiplo = getMaxMultipleOf(p.getNumero());
-            p.setEjecucionesPerdidas(multiplo - p.getEjecuciones());
-            missedDeadlinesPercent = 0;
-            missedEjecutionsPercent  = multiplo - p.getEjecuciones();
-            ejecutionsPercent = 0;
 
-            if(p.getDeadlinesPerdidas() > 0){
-                missedDeadlinesPercent = (double) (p.getDeadlinesPerdidas()) / (double) multiplo;
-            }
-            if(p.getEjecucionesPerdidas() > 0){
-                missedEjecutionsPercent = (double) p.getEjecucionesPerdidas() / (double) multiplo;  
-            }
-            if(p.getEjecuciones() > 0){
-                ejecutionsPercent = (double) p.getEjecuciones() / (double) multiplo;
-            }
-            result += p.toStringInforme() + "    ejecuciones esperadas: " + multiplo + "\n" + 
-                    "    %deadlines perdidas: " + df.format(missedDeadlinesPercent) + "\n" + 
-                    "    %ejecuciones a tiempo: " + df.format(ejecutionsPercent) + "\n" + 
-                    "    %ejecuciones perdidas: " + df.format(missedEjecutionsPercent) + "\n";
+        for(Proceso p: this.procesos){            
+            
+            p.setEjecuciones(this.getEjecucionesEDFInfo(p));
+            ejecucionesTotales = getMaxMultipleOf(p.getNumero());
+            p.setEjecucionesPerdidas(ejecucionesTotales - p.getEjecuciones());
+            p.setDeadlinesPerdidas(this.getDeadlinesPerdidasEDF(p) + p.getEjecucionesPerdidas());
+            result += this.buildInformeOf(p, ejecucionesTotales);
         }
         return result;
     }
@@ -282,7 +277,6 @@ public class Scheduler {
                 timeline++;
                 continue;
             }
-            //-------------------------------------------            
             if(!this.canExecuteBeforePeriod(inProcess, timeline)){                
                 stack.remove(inProcess);
                 this.lineaTiempo.remove(inProcess);
@@ -290,7 +284,6 @@ public class Scheduler {
                 timeline++;
                 continue;
             }
-            //-------------------------------------------
             if(inProcess == last){
                 inProcess.succRemaining();
                 if(inProcess.isReady()){
@@ -326,14 +319,14 @@ public class Scheduler {
                 if(t.isPeriodo() 
                    && t.getUnidadTiempo() > timeline 
                    && ((Periodo) t).isPeriodoOf(p.getNumero())){
-                    if(!this.contains(stack, p.getNumero()) && (double)((Periodo) t).getMultiploOfProceso(p.getNumero()) - ejecutions >= 1){
+                    if(!this.contains(stack, p.getNumero()) 
+                       && (double)((Periodo) t).getMultiploOfProceso(p.getNumero()) - ejecutions >= 1){
                         stack.add(new Ejecucion(p, timeline, p.getTiempo()));
                     }
                     else{
                         break;
                     }
                 }
-                
             }
         }
         return stack;
@@ -358,7 +351,22 @@ public class Scheduler {
             if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
                 sumatoriaT += ((Ejecucion) t).getExcecutedTime();
             }
-            
+            if(t.isPeriodo() 
+               && ((Periodo) t).isPeriodoOf(p.getNumero())
+               && ((Periodo) t).getMultiploOfProceso(p.getNumero()) > sumatoriaT / p.getTiempo()){
+                sumatoriaT += p.getTiempo();
+            }
+        }
+        return (double) sumatoriaT / p.getTiempo();
+    }
+    
+    private double getEjecucionesMontonicInfo(Proceso p){
+        
+        int sumatoriaT = 0;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
+                sumatoriaT += ((Ejecucion) t).getExcecutedTime();
+            }
         }
         return (double) sumatoriaT / p.getTiempo();
     }
@@ -387,51 +395,64 @@ public class Scheduler {
         }
     }
     
-    private String getInfoMontonic() {
-        
-        int multiplo, sumatoria;
-        String result = "";
-        DecimalFormat df = new DecimalFormat("####0.00");
-        double missedDeadlinesPercent,
-                       missedEjecutionsPercent,
-                       ejecutionsPercent;
-        for(Proceso p: this.procesos){    
-            sumatoria = 0;
-            multiplo = 1;
-            for(Tiempo t: this.lineaTiempo){
-                if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
-                    sumatoria += ((Ejecucion) t).getExcecutedTime();
+    private int getMissedDeadlinesMontonic(Proceso p){
+        double sumatoria = 0;
+        int multiplo = 1, result = 0;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
+                if(t.getUnidadTiempo() + ((Ejecucion) t).getExcecutedTime() > (p.getPeriodo() * multiplo) - (p.getPeriodo() - p.getDeadline())){
+                    result++;
                 }
-                if(t.isDeadline() && ((Deadline) t).isDeadlineOf(p.getNumero())){
-                    if(sumatoria / p.getTiempo() < multiplo){
-                        p.addDeadlinePerdida();
-                    }
-                    multiplo++;
+                sumatoria += ((Ejecucion) t).getExcecutedTime();
+            }
+            if(t.isDeadline() && ((Deadline) t).isDeadlineOf(p.getNumero())){
+                if((double)sumatoria / (double)p.getTiempo() <  multiplo){
+                    result++;
                 }
+                multiplo++;
             }
-            
-            multiplo = getMaxMultipleOf(p.getNumero());
-            p.setEjecuciones((int) this.getEjecucionesMontonic(p, this.tiempoTotal));
-            p.setEjecucionesPerdidas(multiplo - p.getEjecuciones());
-            missedDeadlinesPercent = 0;
-            missedEjecutionsPercent  = multiplo - p.getEjecuciones();
-            ejecutionsPercent = 0;
-
-            if(p.getDeadlinesPerdidas() > 0){
-                missedDeadlinesPercent = (double) (p.getDeadlinesPerdidas()) / (double) multiplo;
+            if(t.isPeriodo() 
+               && ((Periodo) t).isPeriodoOf(p.getNumero()) 
+               && (double)sumatoria / (double)p.getTiempo() <  ((Periodo) t).getMultiploOfProceso(p.getNumero())){
+                sumatoria += p.getTiempo();
             }
-            if(p.getEjecucionesPerdidas() > 0){
-                missedEjecutionsPercent = (double) p.getEjecucionesPerdidas() / (double) multiplo;  
-            }
-            if(p.getEjecuciones() > 0){
-                ejecutionsPercent = (double) p.getEjecuciones() / (double) multiplo;
-            }
-            result += p.toStringInforme() + "    ejecuciones esperadas: " + multiplo + "\n" + 
-                    "    %deadlines perdidas: " + df.format(missedDeadlinesPercent) + "\n" + 
-                    "    %ejecuciones a tiempo: " + df.format(ejecutionsPercent) + "\n" + 
-                    "    %ejecuciones perdidas: " + df.format(missedEjecutionsPercent) + "\n";
         }
         return result;
+    }
+    
+    private String getInfoMontonic() {
+        String result = "";
+        int ejecucionesTotales;
+        for(Proceso p: this.procesos){    
+            ejecucionesTotales = getMaxMultipleOf(p.getNumero());
+            
+            p.setEjecuciones((int) this.getEjecucionesMontonicInfo(p));
+            p.setEjecucionesPerdidas(ejecucionesTotales - p.getEjecuciones());
+            p.setDeadlinesPerdidas(this.getMissedDeadlinesMontonic(p));
+            result += buildInformeOf(p, ejecucionesTotales);
+            
+        }
+        return result;
+    }
+    
+    private String buildInformeOf(Proceso p, int totalEjecuciones){
+        DecimalFormat df = new DecimalFormat("####0.00");
+        double missedDeadlinesPercent = 0, missedEjecutionsPercent  = 0, ejecutionsPercent = 0;
+
+            if(p.getDeadlinesPerdidas() > 0){
+                missedDeadlinesPercent = (double) (p.getDeadlinesPerdidas()) / (double) totalEjecuciones;
+            }
+            if(p.getEjecucionesPerdidas() > 0){
+                missedEjecutionsPercent = (double) p.getEjecucionesPerdidas() / (double) totalEjecuciones;  
+            }
+            if(p.getEjecuciones() > 0){
+                ejecutionsPercent = (double) p.getEjecuciones() / (double) totalEjecuciones;
+            }
+            
+            return p.toStringInforme() + "    ejecuciones esperadas: " + totalEjecuciones + "\n" + 
+                    "    deadlines perdidas: " + df.format(missedDeadlinesPercent) + "%" + "\n" + 
+                    "    ejecuciones: " + df.format(ejecutionsPercent) + "%" + "\n" + 
+                    "    ejecuciones perdidas: " + df.format(missedEjecutionsPercent) + "%" + "\n";
     }
     
     public String getInfo(){

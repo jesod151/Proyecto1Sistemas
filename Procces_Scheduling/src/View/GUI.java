@@ -51,16 +51,10 @@ public class GUI extends javax.swing.JFrame {
         this.tableData.setVisible(false);
         this.tableProcesos.setVisible(false);
         
-        
-        this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));this.procesos.add(new Proceso(10, 7, 3));this.lineaTiempoSpinner.setValue(20);//video
-        //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(8, 8, 3));this.lineaTiempoSpinner.setValue(24);
-        //this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));this.lineaTiempoSpinner.setValue(24);
-        //this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));this.procesos.add(new Proceso(1, 1, 1));
-        //this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.procesos.add(new Proceso(10, 5, 1));this.lineaTiempoSpinner.setValue(20);
-        
-        
-        //this.procesos.add(new Proceso(6, 6, 1));this.procesos.add(new Proceso(8, 8, 2));this.procesos.add(new Proceso(12, 12, 4));this.lineaTiempoSpinner.setValue(24);
-        //this.procesos.add(new Proceso(4, 4, 1));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(12, 12, 3));this.procesos.add(new Proceso(24, 24, 4));this.lineaTiempoSpinner.setValue(24);
+        ///-------
+        this.procesos.add(new Proceso(4, 2, 1));this.procesos.add(new Proceso(6, 3, 2));this.procesos.add(new Proceso(12, 6, 3));this.procesos.add(new Proceso(24, 12, 4));this.lineaTiempoSpinner.setValue(24);
+        ///-------
+
         
         this.setProcesos();
         

@@ -51,10 +51,9 @@ public class GUI extends javax.swing.JFrame {
         this.tableData.setVisible(false);
         this.tableProcesos.setVisible(false);
         
-        ///-------
-        this.procesos.add(new Proceso(20, 7, 3));this.procesos.add(new Proceso(5, 4, 2));this.procesos.add(new Proceso(10, 8, 2));this.procesos.add(new Proceso(10, 7, 3));this.lineaTiempoSpinner.setValue(20);//video
-        ///-------
 
+this.procesos.add(new Proceso(5, 5, 2));this.procesos.add(new Proceso(6, 6, 2));this.procesos.add(new Proceso(7, 7, 2));this.procesos.add(new Proceso(8, 8, 2));this.lineaTiempoSpinner.setValue(24);
+        
         
         this.setProcesos();
         
@@ -160,6 +159,8 @@ public class GUI extends javax.swing.JFrame {
         jLabel1.setText("Linea de tiempo");
 
         DeadlineSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        DeadlineSpinner.setEnabled(false);
+        DeadlineSpinner.setFocusable(false);
 
         jLabel2.setText("Deadline");
 
@@ -503,11 +504,11 @@ public class GUI extends javax.swing.JFrame {
             }
             if(t.isDeadline()){
                 for(int i: ((Deadline) t).getProcesos()){
-                    if(this.tableData.getValueAt(i - 1, t.getUnidadTiempo() - 1) != null){
-                        this.tableData.setValueAt(this.tableData.getValueAt(i - 1, t.getUnidadTiempo() - 1) + "D", i - 1, t.getUnidadTiempo() - 1);
+                    if(this.tableData.getValueAt(i - 1, t.getUnidadTiempo()) != null){
+                        this.tableData.setValueAt(this.tableData.getValueAt(i - 1, t.getUnidadTiempo()) + "D", i - 1, t.getUnidadTiempo());
                     }   
                     else{
-                        this.tableData.setValueAt("D", i - 1, t.getUnidadTiempo() - 1);
+                        this.tableData.setValueAt("D", i - 1, t.getUnidadTiempo());
                     }
                 }
             }
@@ -534,9 +535,6 @@ public class GUI extends javax.swing.JFrame {
         }
         return Color.WHITE;
     }
-    
-    
-    
     
     /**
      * @param args the command line arguments

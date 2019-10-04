@@ -75,7 +75,9 @@ public class Scheduler {
         Proceso toSort;
         int timeline = 0, nextEarliest;
         while(timeline < this.tiempoTotal){ 
+            
             nextEarliest = this.nextProcess(getNextEarliestDeadline(timeline), timeline);
+            
             if(nextEarliest < 0){
                 timeline++;
                 continue;
@@ -91,7 +93,7 @@ public class Scheduler {
             }
             sortTiempo(new Ejecucion(toSort, timeline));
             timeline += toSort.getTiempo();
-            toSort.setEjecuciones(this.getEjecutionsEDF(toSort));//this.setEjecutionsEDF(toSort);
+            toSort.setEjecuciones(this.getEjecutionsEDF(toSort, timeline));
         }
         return this.lineaTiempo;
     }
@@ -143,43 +145,47 @@ public class Scheduler {
         if(t == null){
             return -1;
         }
-               
-        if(t.getProcesos().size() == 1){
-            return t.getProcesos().get(0);
+              
+        ArrayList<Integer> result = new ArrayList();
+        int max = -1;
+        for(int i = 0; i < t.getProcesos().size(); i++){
+            result.add(t.getMultiploPeriodo().get(i) - this.getProceso(t.getProcesos().get(i)).getEjecuciones());
+            if(t.isDeadline() && t.getUnidadTiempo() - this.getProceso(t.getProcesos().get(i)).getDeadline() > tiempo){
+                result.set(i, 0);
+            }
+            else if(t.isPeriodo() && t.getUnidadTiempo() - this.getProceso(t.getProcesos().get(i)).getPeriodo() > tiempo){
+                result.set(i, 0);
+            }
+            if(result.get(i) > max){
+                max = result.get(i);
+            }
         }
-        else{            
-            ArrayList<Integer> result = new ArrayList();
-            int max = -1;
-            for(int i = 0; i < t.getProcesos().size(); i++){
-                result.add(t.getMultiploPeriodo().get(i) - this.getProceso(t.getProcesos().get(i)).getEjecuciones());
-                if(t.isDeadline() && t.getUnidadTiempo() - this.getProceso(t.getProcesos().get(i)).getDeadline() > tiempo){
-                    result.set(i, 0);
-                }
-                else if(t.isPeriodo() && t.getUnidadTiempo() - this.getProceso(t.getProcesos().get(i)).getPeriodo() > tiempo){
-                    result.set(i, 0);
-                }
-                if(result.get(i) > max){
-                    max = result.get(i);
-                }
-            }
-            if(max <= 0){
-                return -1;
-            }
-            Random r = new Random();
-            while(true){
-                for(int i = 0; i < result.size(); i++){
-                    if(result.get(i) > 0  && r.nextDouble() >= 0.5){
-                        return t.getProcesos().get(i);
-                    }
+        if(max <= 0){
+            return -1;
+        }
+        Random r = new Random();
+        while(true){
+            for(int i = 0; i < result.size(); i++){
+                if(result.get(i) > 0  && r.nextDouble() >= 0.5){
+                    return t.getProcesos().get(i);
                 }
             }
         }
     }
     
-    public int getEjecutionsEDF(Proceso p){
+    public int getEjecutionsEDF(Proceso p, int timeline){
     
-        int multiplo = 1, result = 0;
-        p.setEjecuciones(0);
+        int result = 0;
+        for(Tiempo t: this.lineaTiempo){
+            if(t.isPeriodo() && ((Periodo) t).isPeriodoOf(p.getNumero())){
+                result++;
+                if(t.getUnidadTiempo() >= timeline){
+                    break;
+                }
+            }
+        }
+        return result;
+        /*p.setEjecuciones(0);
         for(Tiempo t: this.lineaTiempo){
             if(t.isEjecucion() && ((Ejecucion) t).getP().getNumero() == p.getNumero()){
                 if(((Ejecucion) t).getUnidadTiempo() + ((Ejecucion) t).getP().getTiempo() <= ((Ejecucion) t).getP().getPeriodo() * multiplo){
@@ -194,7 +200,7 @@ public class Scheduler {
                 }
             }
         }
-        return result;
+        return result;*/
     }
     
     public int getEjecucionesEDFInfo(Proceso p){

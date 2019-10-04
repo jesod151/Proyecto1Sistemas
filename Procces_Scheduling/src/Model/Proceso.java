@@ -33,6 +33,7 @@ public class Proceso {
         this.ejecuciones = 0;
         this.ejecucionesPerdidas = 0;
         this.generateColor();
+        this.setupDeadline();
         
         instances++;
     }
@@ -46,6 +47,11 @@ public class Proceso {
         this.ejecuciones = 0;
         this.ejecucionesPerdidas = 0;
         this.color = color;
+        this.setupDeadline();
+    }
+    
+    public void setupDeadline(){
+        this.deadline = this.periodo - this.tiempo;
     }
     
     public static void decInstances(){

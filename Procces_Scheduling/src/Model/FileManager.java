@@ -64,7 +64,6 @@ public class FileManager {
         ArrayList<Proceso> result = new ArrayList();
         for(int i = 0; i < json.length(); i++){
             result.add(new Proceso(json.getJSONObject(i).getInt("periodo"),
-                                   json.getJSONObject(i).getInt("deadline"),
                                    json.getJSONObject(i).getInt("tiempo")));
         }
         return result;

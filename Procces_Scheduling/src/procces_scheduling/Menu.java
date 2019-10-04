@@ -42,7 +42,7 @@ public class Menu {
                 this.scheduler.setProcesos(fr.readProcesos());
                 this.procesos = this.scheduler.getProcesos();
                 fr.setOutput(args[3]);
-                if(args[5].toUpperCase().equals("EDF")){
+                if(!args[5].toUpperCase().equals("EDF")){
                     this.modo = 0;
                     this.scheduler.setModo(0);
                 }
@@ -97,7 +97,7 @@ public class Menu {
         do{
             System.out.println("1-Ingresar proceso");
             System.out.println("2-Borrar proceso");
-            System.out.println("3-Listar procesos");
+            System.out.println("3-Ver setup");
             System.out.println("4-Elegir algoritmo de scheduling 0 = Rate Montonic, 1 = EDF");
             System.out.println("5-Rango de tiempo");
             System.out.println("6-Ejecutar");
@@ -144,14 +144,13 @@ public class Menu {
     
     public void ingresarProceso(){
         
-        int p, d, t;
+        int p, t;
         do{
             try{
                 System.out.println("ingrese los datos para el proceso");
                 System.out.print("Periodo:");
                 p = Integer.parseInt(in.nextLine().trim());
-                System.out.print("Deadline:");
-                d = Integer.parseInt(in.nextLine().trim());
+
                 System.out.print("Tiempo:");
                 t = Integer.parseInt(in.nextLine().trim());
             }
@@ -161,7 +160,7 @@ public class Menu {
               continue;
             }
             
-            this.procesos.add(new Proceso(p, d, t));
+            this.procesos.add(new Proceso(p, t));
             return;
         }while(true);
     }
@@ -195,6 +194,20 @@ public class Menu {
     
     public void listadoDeProcesos(){
         System.out.println("----------------------------------------------");
+        if(this.modo == 0){
+            System.out.println("Modo: Rate montonic");
+        }
+        else if(this.modo == 1){
+            System.out.println("Modo: Earliest deadline first EDF");
+        }
+        else{
+            System.out.println("Modo: no definido");
+        }
+        if(this.scheduler.getTiempoTotal() != -1){
+            System.out.println("Linea de tiempo: " + this.scheduler.getTiempoTotal());
+        }
+        System.out.println("----------------------------------------------");
+        System.out.println("Procesos:");
         for(Proceso p: procesos){
             System.out.println(p.toStringGrafico());
         }
@@ -310,7 +323,8 @@ public class Menu {
 "\n" +
 "Generalidades de ejecucion de procesos\n" +
 "	-Periodo: tiempo que tiene un proceso para ejecutarse una vez\n" +
-"	-Deadline: tiempo que tiene un proceso para en un tiempo esperado\n" +
+"	-Deadline: indica apartir de qué unidad de tiempo un proceso no podrá \n" + 
+"         ejecutarse más antes de que termine su periodo\n" +
 "	-Tiempo: tiempo que dura un proceso ejecutandose	\n" +
 "	-Siempre se debe cumplir que Tiempo <= Deadline <= Periodo\n" +
 "	\n" +
@@ -339,7 +353,10 @@ public class Menu {
     public ArrayList<Proceso> cloneProcesos(){
         ArrayList<Proceso> clon = new ArrayList();
         for(Proceso p: this.procesos){
-            clon.add(new Proceso(p.getNumero(), p.getPeriodo(), p.getDeadline(), p.getTiempo(), p.getColor()));
+            clon.add(new Proceso(p.getNumero(),
+                                 p.getPeriodo(),
+                                 p.getTiempo(),
+                                 p.getColor()));
         }
         return clon;
     }

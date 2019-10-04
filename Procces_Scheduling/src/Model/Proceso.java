@@ -24,10 +24,9 @@ public class Proceso {
                 ejecucionesPerdidas;
     private Color color;
 
-    public Proceso(int periodo, int deadline, int tiempo) {
+    public Proceso(int periodo, int tiempo) {
         this.numero = instances;
         this.periodo = periodo;
-        this.deadline = deadline;
         this.tiempo = tiempo;
         this.deadlinesPerdidas = 0;
         this.ejecuciones = 0;
@@ -38,10 +37,9 @@ public class Proceso {
         instances++;
     }
 
-    public Proceso(int numero, int periodo, int deadline, int tiempo, Color color) {
+    public Proceso(int numero, int periodo, int tiempo, Color color) {
         this.numero = numero;
         this.periodo = periodo;
-        this.deadline = deadline;
         this.tiempo = tiempo;
         this.deadlinesPerdidas = 0;
         this.ejecuciones = 0;

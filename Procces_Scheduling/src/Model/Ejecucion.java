@@ -67,7 +67,7 @@ public class Ejecucion extends Tiempo{
 
     @Override
     public String toString() {
-        return "Ejecución t: " + this.getUnidadTiempo() + " " + p + " termina en: " + (this.getUnidadTiempo() + excecutedTime);
+        return "Ejecución t: " + this.getUnidadTiempo() + " " + p + " termina en: " + (this.getUnidadTiempo() + excecutedTime - 1);
     }
     
     @Override

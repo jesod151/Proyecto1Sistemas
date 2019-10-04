@@ -40,9 +40,9 @@ public class Procces_Scheduling {
         // TODO code application logic here
         //C:\Users\USUARIO\AndroidStudioProjects\Proyecto1Sistemas\Procces_Scheduling\dist
         //java -jar "Procces_Scheduling.jar" -i C:\Users\USUARIO\Desktop\input.txt -o output.txt -a EDF -t 120
-        //Menu menu = new Menu(args);
-        GUI gui = new GUI();
-        gui.setVisible(true);
+        Menu menu = new Menu(args);
+        //GUI gui = new GUI();
+        //gui.setVisible(true);
     }
     
 }
